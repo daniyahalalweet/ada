@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة متابعة الأداء الوظيفي</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="متابعة الأداء">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2563eb">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232563eb%22/%3E%3Cg%20transform%3D%22translate%284%204%29%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%225%22%20y%3D%224%22%20width%3D%2214%22%20height%3D%2217%22%20rx%3D%222%22/%3E%3Cpath%20d%3D%22M9%204V3h6v1%22/%3E%3Cpath%20d%3D%22M9%2013l2%202%204-4%22/%3E%3C/g%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060a14;--bg1:#0f1629;--bg2:#141c33;--bg3:#1a2444;--bgi:rgba(255,255,255,.04);
+  --bd:rgba(255,255,255,.06);--bdh:rgba(56,189,248,.18);
+  --tp:#f1f5f9;--ts:#94a3b8;--tm:#64748b;
+  --cy:#38bdf8;--em:#34d399;--am:#fbbf24;--ro:#fb7185;--vi:#a78bfa;
+  --g1:linear-gradient(135deg,#34d399,#38bdf8);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--tp);min-height:100vh}
+button{font-family:inherit}
+.app{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sb{width:280px;background:var(--bg1);border-left:1px solid var(--bd);position:fixed;top:0;right:0;height:100vh;display:flex;flex-direction:column;z-index:50;transition:transform .3s}
+.sb-head{padding:16px 18px;border-bottom:1px solid var(--bd)}
+.sb-logo{display:flex;align-items:center;gap:10px}
+.sb-logo-ic{width:36px;height:36px;background:#2563eb;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;overflow:hidden;flex-shrink:0}
+.sb-logo-ic img{width:100%;height:100%;object-fit:contain;background:#fff}
+.sb-logo-t{font-family:'Cairo';font-size:14px;font-weight:700;color:#60a5fa}
+.sb-logo-s{font-size:10px;color:var(--tm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
+.sb-nav{padding:10px 12px;border-bottom:1px solid var(--bd)}
+.nav-btn{width:100%;padding:8px 12px;border-radius:9px;border:1px solid transparent;background:transparent;color:var(--ts);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .15s;margin-bottom:2px;text-align:right}
+.nav-btn:hover{background:var(--bg3);color:var(--tp)}
+.nav-btn.active{background:rgba(56,189,248,.08);color:var(--cy);border-color:rgba(56,189,248,.12)}
+.nav-ic{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;background:rgba(255,255,255,.04)}
+.sb-add{padding:12px 16px;border-bottom:1px solid var(--bd)}
+.sb-add-t{font-size:11px;font-weight:700;color:var(--em);margin-bottom:8px}
+.fg{margin-bottom:6px}
+.fg label{font-size:10px;color:var(--tm);display:block;margin-bottom:2px;font-weight:600}
+.fi,.fs,.fa{width:100%;padding:7px 10px;background:var(--bgi);border:1px solid var(--bd);border-radius:6px;color:var(--tp);font-family:'Tajawal';font-size:12px;outline:none;transition:all .2s}
+.fa{min-height:90px;resize:vertical;line-height:1.7}
+.fi:focus,.fs:focus,.fa:focus{border-color:var(--cy);box-shadow:0 0 0 2px rgba(56,189,248,.06)}
+.fi::placeholder,.fa::placeholder{color:var(--tm);opacity:.6}
+.fs{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 8px center;padding-left:20px}
+.fs option{background:#1e293b;color:var(--tp)}
+.btn-add{width:100%;padding:8px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);border-radius:7px;color:var(--em);font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:2px}
+.btn-add:hover{background:rgba(52,211,153,.2)}
+.sb-search{padding:8px 12px 2px}
+.sb-list{flex:1;overflow-y:auto;padding:6px 10px}
+.sb-list::-webkit-scrollbar{width:3px}
+.sb-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.06);border-radius:2px}
+.ti{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:9px;cursor:pointer;transition:all .12s;margin-bottom:3px;border:1px solid transparent}
+.ti:hover{background:var(--bg3)}
+.ti.act{background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.12)}
+.ti-av{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cairo';font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.ti-info{flex:1;min-width:0}
+.ti-n{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ti-s{font-size:9px;color:var(--tm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ti-avg{font-family:'Cairo';font-size:12px;font-weight:800;min-width:28px;text-align:center}
+.sb-ft{padding:10px 14px;border-top:1px solid var(--bd);display:flex;gap:6px}
+.sb-btn{flex:1;padding:6px;background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:6px;color:var(--ts);font-size:10px;cursor:pointer;transition:all .15s;text-align:center}
+.sb-btn:hover{background:rgba(255,255,255,.07);color:var(--tp)}
+.sb-btn.ac{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.15);color:var(--cy)}
+
+/* MAIN */
+.mn{margin-right:280px;flex:1;min-height:100vh;min-width:0}
+.mn-hd{padding:14px 28px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:10px;backdrop-filter:blur(16px);background:rgba(6,10,20,.85);position:sticky;top:0;z-index:40;flex-wrap:wrap}
+.mn-hd-l{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.pg-t{font-family:'Cairo';font-size:16px;font-weight:700}
+.bdg{padding:3px 10px;border-radius:14px;font-size:10px;display:inline-flex;align-items:center;gap:4px}
+.bdg-em{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.15);color:var(--em)}
+.bdg-m{background:rgba(255,255,255,.03);border:1px solid var(--bd);color:var(--ts)}
+.bdot{width:5px;height:5px;border-radius:50%;background:var(--em);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.mb{padding:6px 14px;background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:7px;color:var(--ts);font-size:11px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.mb:hover{background:rgba(255,255,255,.08);color:var(--tp)}
+.mb-cy{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.15);color:var(--cy)}
+.mb-em{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.15);color:var(--em)}
+.mb-am{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.15);color:var(--am)}
+.mb-ro{background:rgba(251,113,133,.08);border-color:rgba(251,113,133,.15);color:var(--ro)}
+.mb:disabled{opacity:.35;cursor:default}
+.mn-ct{padding:24px 28px}
+.credit{text-align:center;padding:20px 28px 14px;border-top:1px solid var(--bd);margin-top:8px}
+
+/* CARDS */
+@keyframes su{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ov-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.ov-s{background:var(--bg1);border:1px solid var(--bd);border-radius:13px;padding:18px;animation:su .4s ease both}
+.ov-s-ic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;margin-bottom:10px}
+.ov-s-lb{font-size:11px;color:var(--tm);margin-bottom:3px}
+.ov-s-v{font-family:'Cairo';font-size:26px;font-weight:900;line-height:1}
+.ov-s-sub{font-size:10px;color:var(--tm);margin-top:4px}
+.card{background:var(--bg1);border:1px solid var(--bd);border-radius:15px;padding:22px;margin-bottom:20px;animation:su .4s ease both}
+.card-t{font-family:'Cairo';font-size:14px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card-t .sp-r{margin-right:auto;display:flex;gap:6px}
+.tbl-w{overflow-x:auto}
+.tbl{width:100%;border-collapse:separate;border-spacing:0}
+.tbl thead th{font-size:10px;font-weight:700;color:var(--tm);text-align:center;padding:8px 6px;border-bottom:2px solid rgba(52,211,153,.12);white-space:nowrap}
+.tbl thead th.r,.tbl td.r{text-align:right}
+.tbl tbody tr:hover{background:rgba(52,211,153,.02)}
+.tbl tbody td{font-size:12px;color:var(--ts);padding:9px 6px;text-align:center;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle}
+.tbl td.nm{font-weight:600;color:var(--tp);cursor:pointer}
+.tbl td.nm:hover{color:var(--cy)}
+.sp{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;white-space:nowrap;background:rgba(148,163,184,.1);color:#94a3b8}
+.empty{text-align:center;padding:50px 20px;color:var(--tm)}
+.empty .em{font-size:44px;margin-bottom:10px}
+.mini-bar{width:70px;height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle;margin-left:6px}
+.mini-bar i{display:block;height:100%;border-radius:3px;background:var(--cy)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.hint{font-size:11px;color:var(--tm);line-height:1.8}
+.note-box{padding:12px 14px;border-radius:10px;font-size:12px;line-height:1.8;margin-bottom:16px}
+.note-info{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);color:#bae6fd}
+.note-warn{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.15);color:#fde68a}
+
+/* PROFILE */
+.pf-hd{display:flex;align-items:center;gap:18px;padding:20px 22px;background:var(--bg1);border:1px solid var(--bd);border-radius:15px;margin-bottom:14px;flex-wrap:wrap}
+.pf-av{width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-family:'Cairo';font-size:20px;font-weight:900;color:#fff;flex-shrink:0}
+.pf-info h2{font-family:'Cairo';font-size:18px;font-weight:700;margin-bottom:2px}
+.pf-info .pf-sp{font-size:12px;color:var(--ts)}
+.pf-mt{display:flex;gap:22px;margin-right:auto;align-items:center}
+.pf-mt-i{text-align:center}
+.pf-mt-lb{font-size:9px;color:var(--tm);margin-bottom:2px}
+.pf-mt-v{font-family:'Cairo';font-size:16px;font-weight:800}
+.pf-nav{display:flex;gap:5px}
+.tabs{display:flex;gap:4px;margin-bottom:18px;overflow-x:auto;padding-bottom:2px;border-bottom:1px solid var(--bd)}
+.tab{padding:9px 14px;border:none;background:transparent;color:var(--ts);font-size:12px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;margin-bottom:-1px}
+.tab:hover{color:var(--tp)}
+.tab.on{color:var(--cy);border-bottom-color:var(--cy)}
+.tab .soon{font-size:9px;color:var(--tm);margin-right:4px}
+
+/* EVAL */
+.el-g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.el-i{padding:12px 14px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;transition:border-color .15s}
+.el-i.done{border-color:rgba(52,211,153,.14)}
+.el-tp{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:9px}
+.el-nm{font-size:12px;color:var(--tp);line-height:1.6}
+.el-nm b{color:var(--tm);font-weight:700;margin-left:4px;font-family:'Cairo'}
+.el-wt{font-size:9px;color:var(--tm);background:rgba(255,255,255,.04);padding:2px 7px;border-radius:4px;white-space:nowrap}
+.el-bt{display:flex;align-items:center;gap:5px}
+.rb{width:34px;height:30px;border-radius:7px;border:1px solid var(--bd);background:var(--bgi);color:var(--ts);font-family:'Cairo';font-size:13px;font-weight:700;cursor:pointer;transition:all .12s}
+.rb:hover{border-color:var(--cy);color:var(--tp)}
+.rb.on.hi{background:rgba(52,211,153,.16);border-color:rgba(52,211,153,.4);color:var(--em)}
+.rb.on.mi{background:rgba(251,191,36,.16);border-color:rgba(251,191,36,.4);color:var(--am)}
+.rb.on.lo{background:rgba(251,113,133,.16);border-color:rgba(251,113,133,.4);color:var(--ro)}
+.el-lb{font-size:10px;color:var(--tm);margin-right:auto;text-align:left;line-height:1.4}
+.el-lb b{display:block;font-family:'Cairo';font-size:11px}
+.ct-row{display:flex;align-items:center;gap:10px}
+.ct-lb{font-size:11px;color:var(--ts);flex:1}
+.ct-ctr{display:flex;align-items:center;gap:5px}
+.ct-b{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.04);border:1px solid var(--bd);color:var(--ts);font-size:13px;cursor:pointer}
+.ct-b:hover{background:rgba(56,189,248,.08);color:var(--cy)}
+.ct-in{width:48px;height:26px;background:var(--bgi);border:1px solid var(--bd);border-radius:6px;color:var(--tp);font-family:'Cairo';font-size:12px;font-weight:700;text-align:center;outline:none;-moz-appearance:textfield}
+.ct-in::-webkit-outer-spin-button,.ct-in::-webkit-inner-spin-button{-webkit-appearance:none}
+.na{width:100%;min-height:70px;padding:10px;background:var(--bgi);border:1px solid var(--bd);border-radius:7px;color:var(--tp);font-family:'Tajawal';font-size:12px;outline:none;resize:vertical;line-height:1.7}
+.na:focus{border-color:var(--cy)}
+.bx-t{font-family:'Cairo';font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.soon-box{text-align:center;padding:44px 20px;color:var(--tm)}
+.soon-box .em{font-size:38px;margin-bottom:8px}
+.soon-box h3{font-family:'Cairo';font-size:15px;color:var(--ts);margin-bottom:6px}
+.rep-g{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rep{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.rep h4{font-family:'Cairo';font-size:13px}
+.rep p{font-size:11px;color:var(--tm);flex:1;line-height:1.7}
+.rep .acts{display:flex;gap:6px}
+
+.ev-card{padding:16px 18px}
+.ev-card .card-t{margin-bottom:10px;font-size:13px}
+.ev-pct{font-family:'Cairo';font-weight:800;font-size:12px}
+.ev-in{display:flex;flex-direction:column;gap:4px}
+.ev-lk{display:flex;gap:6px;align-items:center}
+.ev-lk .fi{flex:1;min-width:0}
+.ev-lk a.mb{text-decoration:none;padding:5px 10px}
+.ev-row{display:grid;grid-template-columns:1fr auto 260px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid rgba(255,255,255,.04)}
+.ev-row:has(input[id^=evAdd]){grid-template-columns:1fr auto}
+.ev-n{font-size:12px;color:var(--tp);line-height:1.6}
+.ev-bt{display:flex;gap:4px;align-items:center;align-self:center}
+.evb{height:30px;line-height:1;padding:0 10px;border-radius:6px;border:1px solid var(--bd);background:var(--bgi);color:var(--ts);font-size:11px;cursor:pointer;white-space:nowrap}
+.evb:hover{color:var(--tp);border-color:var(--cy)}
+.evb.s-y.on{background:rgba(52,211,153,.16);border-color:rgba(52,211,153,.45);color:var(--em)}
+.evb.s-n.on{background:rgba(251,113,133,.16);border-color:rgba(251,113,133,.45);color:var(--ro)}
+.evb.s-na.on{background:rgba(148,163,184,.16);border-color:rgba(148,163,184,.45);color:#cbd5e1}
+.ev-note{font-size:11px;padding:6px 9px}
+.el-ev{font-size:10px;color:var(--tm);margin:-4px 0 8px;cursor:pointer}
+.el-ev:hover{color:var(--cy)}
+.ov-stats{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important}
+.pr-ev td{font-size:9.5px;padding:3px 5px;vertical-align:middle}
+.pr-ev tr{page-break-inside:avoid}
+.pr-ev thead{display:table-header-group}
+.seg{display:flex;gap:4px;background:var(--bg1);border:1px solid var(--bd);border-radius:10px;padding:4px;margin-bottom:16px;overflow-x:auto}
+.seg button{flex:1;padding:8px 12px;border:none;border-radius:7px;background:transparent;color:var(--ts);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.seg button.on{background:rgba(56,189,248,.12);color:var(--cy)}
+.rb.sm{width:28px;height:26px;font-size:12px}
+.ck{width:17px;height:17px;accent-color:#34d399;cursor:pointer}
+.miss{padding-right:18px;font-size:11.5px;color:var(--ts);line-height:1.9}
+.miss b{color:var(--tp);font-weight:600}
+.vs-dom{font-family:'Cairo';font-weight:700;font-size:12.5px;color:var(--cy);margin:14px 0 4px;padding-bottom:4px;border-bottom:1px solid rgba(56,189,248,.15)}
+.vs-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:7px 0 3px}
+.vs-row.vs-tool{grid-template-columns:1fr auto 170px 170px;border-top:1px solid rgba(255,255,255,.04);padding:8px 0}
+.vs-det{margin:0 0 6px;border-bottom:1px solid rgba(255,255,255,.04);padding-bottom:6px}
+.vs-det summary{font-size:10px;color:var(--tm);cursor:pointer;padding:2px 0}
+.vs-det[open] summary{color:var(--cy)}
+.vs-det .grid3{margin-top:6px;gap:8px}
+.vs-det .fi{font-size:11px}
+.evb.l-m.on,.evb.t-on.on{background:rgba(52,211,153,.16);border-color:rgba(52,211,153,.45);color:var(--em)}
+.evb.l-a.on,.evb.t-part.on{background:rgba(251,191,36,.16);border-color:rgba(251,191,36,.45);color:var(--am)}
+.evb.l-w.on,.evb.t-off.on{background:rgba(251,113,133,.16);border-color:rgba(251,113,133,.45);color:var(--ro)}
+.vbadge,.lvt{display:inline-block;font-size:9.5px;padding:1px 6px;border-radius:4px;margin-right:4px;background:rgba(255,255,255,.05);color:var(--tm);white-space:nowrap}
+.lvt{font-size:11px;padding:2px 8px}
+.l-m.vbadge,.lvt.l-m,.lvt.t-on{color:var(--em);background:rgba(52,211,153,.1)}
+.l-a.vbadge,.lvt.l-a,.lvt.t-part{color:var(--am);background:rgba(251,191,36,.1)}
+.l-w.vbadge,.lvt.l-w,.lvt.t-off{color:var(--ro);background:rgba(251,113,133,.1)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.1);margin:0 2px}
+.dot.ok{background:var(--em)}
+.pr-txt.sm,.pr-t td.sm{font-size:9.5px}
+.pf50 .pr-t td,.pf50 .pr-t th{padding:1px 4px;font-size:9px;line-height:1.35}
+.pf50 .pr-bar{margin:4px 0 2px;padding:1px 8px;font-size:10px}
+.pf50 .pr-ttl{margin:0 0 3px;font-size:14px}
+.f50 td{height:15px}
+.f50 th{font-size:9px}
+.f50 th.h-m{background:#1e293b}.f50 th.h-a{background:#475569}.f50 th.h-w{background:#8b9bb0}
+.f50 th.z{background:#e2e8f0;color:#334155;font-weight:700;padding:1px}
+.f50 td.ck5{width:2.6%;font-weight:800;color:#0f766e}
+.f50 td.nd{background:#f1f5f9}
+.vtd{padding:2px!important}
+.vt{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;font-size:8.5px;line-height:1.2;display:inline-block;inline-size:58px;text-align:center}
+/* SCHOOL */
+.logo-prev{width:110px;height:110px;border:1px dashed var(--bd);border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:rgba(255,255,255,.02);color:var(--tm);font-size:11px;text-align:center}
+.logo-prev img{max-width:100%;max-height:100%;object-fit:contain;background:#fff}
+
+/* MODELS */
+.md-tbl td,.md-tbl th{font-size:11.5px}
+.md-sum{font-family:'Cairo';font-weight:800;color:var(--em)}
+
+/* MOBILE */
+.mob-tog{display:none;position:fixed;top:10px;right:10px;z-index:60;width:34px;height:34px;background:var(--bg1);border:1px solid var(--bd);border-radius:8px;color:var(--tp);font-size:16px;cursor:pointer;align-items:center;justify-content:center}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45}
+@media(max-width:900px){
+  .sb{transform:translateX(100%)}.sb.open{transform:translateX(0)}
+  .mn{margin-right:0}.mob-tog{display:flex}.overlay.show{display:block}
+  .mn-hd{padding:12px 16px 12px 16px;padding-right:54px}
+  .mn-ct{padding:16px}
+  .ov-stats{grid-template-columns:repeat(2,1fr)}
+  .el-g,.grid2,.grid3,.rep-g{grid-template-columns:1fr}
+  .ev-row,.vs-row,.vs-row.vs-tool{grid-template-columns:1fr}
+  .pf-mt{margin-right:0;width:100%;justify-content:space-around}
+}
+
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);padding:8px 20px;border-radius:8px;font-size:12px;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.toast.ok{background:rgba(52,211,153,.16);border:1px solid rgba(52,211,153,.3);color:var(--em)}
+.toast.err{background:rgba(251,113,133,.16);border:1px solid rgba(251,113,133,.3);color:var(--ro)}
+
+/* PRINT */
+#printArea{display:none}
+@page{size:A4;margin:11mm 12mm}
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff!important;color:#111!important}
+  body>*:not(#printArea){display:none!important}
+  #printArea{display:block!important}
+}
+.pr{font-family:'Tajawal',sans-serif;color:#1f2937;font-size:11px;line-height:1.55;direction:rtl}
+.pr-hd{display:grid;grid-template-columns:1fr 90px 1fr;align-items:center;gap:10px;padding-bottom:8px;border-bottom:2px solid #334155;margin-bottom:8px}
+.pr-hd .r{font-size:10.5px;font-weight:700;line-height:1.7}
+.pr-hd .c{text-align:center}
+.pr-hd .c img{max-width:80px;max-height:64px;object-fit:contain}
+.pr-hd .c .moe{font-family:'Cairo';font-weight:800;font-size:12px}
+.pr-hd .l{text-align:left;font-size:10px;line-height:1.7}
+.pr-sch{text-align:center;font-family:'Cairo';font-weight:800;font-size:13px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:6px;padding:4px;margin-bottom:6px}
+.pr-ttl{text-align:center;font-family:'Cairo';font-weight:800;font-size:15px;margin:2px 0 6px}
+.pr-ttl span{border-bottom:2px solid #334155;padding-bottom:2px}
+.pr-bar{background:#3f4a5a;color:#fff;font-weight:700;font-size:11px;padding:2px 8px;border-radius:3px;margin:6px 0 3px}
+.pr-t{width:100%;border-collapse:collapse}
+.pr-t th{background:#475569;color:#fff;font-size:10px;font-weight:700;padding:4px 6px;border:1px solid #94a3b8}
+.pr-t td{font-size:10.5px;padding:3px 6px;border:1px solid #cbd5e1;text-align:center}
+.pr-t td.r{text-align:right}
+.pr-t td.k{background:#f1f5f9;font-weight:700;text-align:right;width:16%}
+.pr-t tr.tot td{background:#f1f5f9;font-weight:800}
+.pr-txt{border:1px solid #cbd5e1;border-radius:3px;padding:4px 8px;min-height:24px;white-space:pre-wrap;font-size:10.5px}
+.pr-sigs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px;page-break-inside:avoid}
+.pr-sig{border:1px solid #cbd5e1;border-radius:4px;padding:6px 8px;font-size:10px;line-height:2}
+.pr-sig b{display:block;font-size:10.5px;border-bottom:1px solid #e2e8f0;margin-bottom:2px}
+.pr-ft{margin-top:8px;padding-top:5px;border-top:1px solid #94a3b8;display:flex;justify-content:space-between;font-size:9px;color:#64748b}
+</style>
+</head>
+<body>
+<button class="mob-tog" onclick="togSB()">☰</button>
+<div class="overlay" id="ov" onclick="togSB()"></div>
+
+<div class="app">
+<aside class="sb" id="sb">
+  <div class="sb-head">
+    <div class="sb-logo">
+      <div class="sb-logo-ic" id="sbLogo"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 13l2 2 4-4"/></svg></div>
+      <div style="min-width:0"><div class="sb-logo-t">متابعة الأداء الوظيفي</div><div class="sb-logo-s" id="sbSub">ملفات المعلمات</div></div>
+    </div>
+  </div>
+  <div class="sb-nav">
+    <button class="nav-btn" data-r="dash" onclick="go('dash')"><span class="nav-ic">📊</span>النظرة العامة</button>
+    <button class="nav-btn" data-r="staff" onclick="go('staff')"><span class="nav-ic">👩‍🏫</span>المعلمات والموظفات</button>
+    <button class="nav-btn" data-r="school" onclick="go('school')"><span class="nav-ic">🏫</span>إعدادات المدرسة</button>
+    <button class="nav-btn" data-r="reports" onclick="go('reports')"><span class="nav-ic">🖨️</span>التقارير</button>
+    <button class="nav-btn" data-r="models" onclick="go('models')"><span class="nav-ic">📘</span>نماذج التقييم</button>
+  </div>
+  <div class="sb-add">
+    <div class="sb-add-t">➕ إضافة سريعة</div>
+    <div class="fg"><input class="fi" id="qN" placeholder="الاسم..." onkeydown="if(event.key==='Enter')quickAdd()"></div>
+    <div class="fg"><select class="fs" id="qJ"></select></div>
+    <button class="btn-add" onclick="quickAdd()">➕ إضافة</button>
+  </div>
+  <div class="sb-search"><input class="fi" id="qS" placeholder="🔍 بحث بالاسم..." oninput="renderList()"></div>
+  <div class="sb-list" id="sList"></div>
+  <div class="sb-ft">
+    <button class="sb-btn ac" onclick="saveD(true)">💾 حفظ</button>
+    <button class="sb-btn" onclick="expAll()">📤 تصدير</button>
+    <button class="sb-btn" onclick="impD()">📥 استيراد</button>
+  </div>
+</aside>
+
+<div class="mn">
+  <div class="mn-hd">
+    <span class="pg-t" id="pgT"></span>
+    <div class="mn-hd-l" id="hdBtns"></div>
+  </div>
+  <div class="mn-ct" id="mnCt"></div>
+  <div class="credit">
+    <span style="font-size:11px;color:var(--tm)">إعداد: </span>
+    <span style="font-family:'Cairo';font-size:12px;font-weight:600;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">دانية العلويط</span>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="tst"></div>
+<input type="file" id="xIn" accept=".xlsx,.xls,.csv" style="display:none" onchange="hdXls(event)">
+<input type="file" id="fIn" accept=".json" style="display:none" onchange="hdImp(event)">
+<input type="file" id="lgIn" accept="image/*" style="display:none" onchange="hdLogo(event)">
+<div id="printArea"></div>
+
+<script>
+/* ═══════════ النماذج الرسمية ═══════════
+   المرجع: الدليل الإرشادي لإدارة الأداء الوظيفي لشاغلي الوظائف التعليمية — الإصدار الثاني (وزارة التعليم)
+   جميع البنود بصياغة الدليل حرفيًا. المعرّف (id) ثابت للبند المشترك بين النماذج. */
+const N={
+ c1:'أداء الواجبات الوظيفية',c2:'التفاعل مع المجتمع المهني',c3:'التفاعل مع أولياء الأمور',
+ t1:'التنويع في إستراتيجيات التدريس',t2:'تحسين نتائج المتعلمين',t3:'إعداد وتنفيذ خطة التعلم',
+ t4:'توظيف تقنيات ووسائل التعلم المناسبة',t5:'تهيئة بيئة تعليمية',t6:'الإدارة الصفية',
+ t7:'تحليل نتائج المتعلمين وتشخيص مستوياتهم',t8:'تنوع أساليب التقويم',
+ a1:'إعداد خطة مزمنة ومعتمدة لبرامج وفعاليات النشاط الطلابي',a2:'تهيئة البيئة المدرسية للبرامج والأنشطة الطلابية',
+ a3:'يدعم المتعلمين وفق احتياجاتهم وميولهم للأنشطة',a4:'يحفز المتعلمين على المشاركة في الأنشطة المدرسية',
+ h1:'تنفيذ الخطة المشتركة للبرامج الصحية المدرسية',h2:'حصر الحالات الصحية للمتعلمين',h3:'تهيئة البيئة الصحية المدرسية',
+ k1:'إعداد خطة شاملة وتفصيلية للأنشطة',k2:'تصميم خبرات تعلم مرنة ومبتكرة',k3:'التمكن من المادة العلمية',
+ k4:'استخدام إستراتيجيات تدريس فاعلة ومتنوعة',k5:'إشراك الأسرة في خطط النمو والتعلم',
+ k6:'تهيئ بيئة تعلمية آمنة ومعززة للتطور النمائي والتعلم',k7:'توفير فرص متنوعة لدعم التفاعلات في بيئة التعلم',
+ k8:'تقوّم تعلم المتعلمين وتتابع تقدمهم بانتظام',k9:'تستثمر نتائج التقويم في تعزيز النمو والتعلم',
+ k10:'تشرك الأسرة في نتائج التقويم',k11:'تدعم تحقيق مستويات الأداء المستهدفة لكل متعلم',
+ k12:'تدعم مهارات المستقبل لدى المتعلمين',k13:'تدعم اكتساب المتعلمين القيم والمبادئ والاتجاهات',
+ l1:'يعد خطة يومية لأنشطة المختبر',l2:'المعرفة بالأسس والمفاهيم الفنية',l3:'يوفر المستلزمات اللازمة لأداء التجارب العلمية',
+ l4:'يلتزم بسياسات وإجراءات السلامة المهنية',l5:'يحضر ويجهز المختبر',
+ l6:'تهيئة وتسليم الأجهزة المطلوبة للمعلمين وتخزينها بطريقة سليمة',l7:'يعد تقرير أنشطة ومهام المختبر الأسبوعية',
+ l8:'يعد تقارير دورية عن حالة الأجهزة والمعدات',
+ g1:'يقدم التدخلات المناسبة لتعزيز الانضباط',g2:'تقديم برامج تربوية لتعزيز دافعية الطلبة للتعلم',
+ g3:'إعداد خطة لبرامج التوجيه الطلابي',g4:'يصنف الحالات ويقدم برامج الدعم المناسبة',
+ g5:'يعزز القيم والسلوكيات للمتعلمين',g6:'يقدم التدخلات النفسية والاجتماعية',
+ g7:'يساعد المتعلمين على التخطيط المهني والتعليمي',g8:'يعزز التفوق الدراسي',
+ g9:'يقدم تدخلات تربوية للمتأخرين دراسيًا والمعيدين',g10:'توعية المتعلمين وأولياء أمورهم بقواعد السلوك والمواظبة',
+ s1:'مرن وقادر على تنفيذ أعماله في ظل ظروف العمل المختلفة',s2:'يدعم ويشارك في المبادرات النوعية',
+ s3:'يتخذ إجراءات تربوية تحقق الانضباط المدرسي',s4:'يدير الموارد في المدرسة بكفاءة',
+ s5d:'يشارك في إعداد خطة للتطوير المهني',s5p:'يعد خطة للتطوير المهني',
+ s6:'يقدم التغذية الراجعة ويتابع تحقق مؤشرات الأداء الوظيفي',s7:'يدعم تنفيذ برامج التطوير المهني',
+ s8:'يقيم أداء منسوبي المدرسة',s9:'ينفذ إجراءات علمية لتحسين نتائج التعلم',s10:'يسهم في تحسين مستوى أداء المدرسة',
+ s11d:'يشارك في إعداد الخطط المدرسية اللازمة',s11p:'يعد الخطط المدرسية اللازمة',
+ s12:'يتابع تنفيذ الخطط المدرسية بمختلف أنواعها',
+ s13:'يهيئ الفرص والإمكانات الداعمة لمشاركة الطلاب في الأنشطة الصفية وغير الصفية',
+ s14:'يوظف المنصات الرقمية وتطبيقاتها المعتمدة في دعم عمليات التعليم والتعلم',
+ s15:'يتابع تعزيز السلوك الإيجابي للطلاب',s16:'يهيئ بيئة مدرسية آمنة ومحفزة على التعلم'
+};
+function mk(name,list){return{name,items:list.map(([id,w])=>({id,n:N[id],w}))}}
+const T5=['t1','t2','t3','t4','t5','t6','t7','t8'].map(id=>[id,5]);
+const MODELS={
+ teacher:mk('نموذج تقييم أداء المعلم',[['c1',10],['c2',10],['c3',10],['t1',10],['t2',10],['t3',10],['t4',10],['t5',5],['t6',5],['t7',10],['t8',10]]),
+ activity:mk('نموذج تقييم أداء معلم مسند له نشاط طلابي',[['c1',10],['c2',10],['c3',10],...T5,['a1',10],['a2',5],['a3',5],['a4',10]]),
+ health:mk('نموذج تقييم أداء معلم مسند له توجيه صحي',[['c1',10],['c2',10],['c3',10],...T5,['h1',15],['h2',5],['h3',10]]),
+ kg:mk('نموذج تقييم أداء معلمة رياض الأطفال',[['c1',10],['c2',5],['c3',5],['t1',5],['t2',5],['k1',5],['k2',5],['t4',5],['k3',5],['k4',5],['k5',5],['k6',5],['k7',5],['k8',5],['k9',5],['k10',5],['k11',5],['k12',5],['k13',5]]),
+ lab:mk('نموذج تقييم أداء محضر المختبر',[['c1',10],['c2',10],['c3',10],['t1',10],['t2',10],['l1',5],['l2',5],['l3',5],['l4',5],['l5',5],['l6',5],['l7',10],['l8',10]]),
+ counselor:mk('نموذج تقييم أداء الموجه الطلابي',[['c1',20],['c2',5],['c3',5],['g1',5],['g2',5],['g3',10],['g4',10],['g5',10],['g6',10],['g7',5],['g8',5],['g9',5],['g10',5]]),
+ deputy:mk('نموذج تقييم أداء وكيل المدرسة',[['c1',5],['c2',5],['c3',5],['s1',5],['s2',10],['s3',5],['s4',5],['s5d',5],['s6',5],['s7',5],['s8',5],['s9',5],['s10',5],['s11d',5],['s12',5],['s13',5],['s14',5],['s15',5],['s16',5]]),
+ principal:mk('نموذج تقييم أداء مدير المدرسة',[['c1',5],['c2',5],['c3',5],['s1',5],['s2',5],['s3',5],['s4',5],['s5p',5],['s6',5],['s7',5],['s8',5],['s9',5],['s10',10],['s11p',5],['s12',5],['s13',5],['s14',5],['s15',5],['s16',5]])
+};
+const JOBS=[
+ {k:'teacher',n:'معلمة',m:'teacher'},{k:'activity',n:'معلمة مسند لها نشاط طلابي',m:'activity'},
+ {k:'health',n:'معلمة مسند لها توجيه صحي',m:'health'},{k:'kg',n:'معلمة رياض أطفال',m:'kg'},
+ {k:'lab',n:'محضّرة مختبر',m:'lab'},{k:'counselor',n:'موجهة طلابية',m:'counselor'},
+ {k:'deputy',n:'وكيلة',m:'deputy'},{k:'principal',n:'مديرة',m:'principal'},
+ {k:'admin',n:'إدارية',m:''},{k:'other',n:'أخرى',m:''}
+];
+const RL={5:'مثالي',4:'تخطى التوقعات',3:'وافق التوقعات',2:'بحاجة إلى تطوير',1:'غير مرضٍ'};
+const SPECS=['اسلامية','انجليزي','لغة عربية','اجتماعيات','فيزياء','كيمياء','رياضيات','حاسب','احياء','اقتصاد'];
+const LEG=['c1','c2','c3','t1','t2','t3','t4','t5','t6','t7','t8']; // ترتيب البنود في النسخة السابقة
+const CL=['#38bdf8','#34d399','#a78bfa','#fbbf24','#fb7185','#60a5fa','#f472b6','#2dd4bf','#4ade80','#fdba74'];
+const KEY='pd5',OLD='pd4';
+
+/* ═══════════ البيانات ═══════════ */
+function blank(){return{v:2,school:{name:'',edu:'',office:'',stage:'',year:'١٤٤٨ هـ',principal:'',deputy:'',logo:''},staff:[],nId:1,evHide:{},evExtra:{}}}
+function newStaff(o){return Object.assign({id:0,name:'',job:'teacher',model:'teacher',spec:'',subject:'',classes:'',
+  ratings:{},strengths:'',weaknesses:'',notes:'',courses:0,legacyVisits:0,
+  evidence:{},reviews:[],visits:[],updated:Date.now()},o)}
+function norm(d){const b=blank();d=Object.assign(b,d);d.school=Object.assign(blank().school,d.school||{});
+  d.staff=(d.staff||[]).map(s=>newStaff(s));d.nId=Math.max(d.nId||1,...d.staff.map(s=>s.id+1),1);d.v=2;return d}
+function migrateV1(o){const d=blank();(o.ts||[]).forEach(t=>{const r={};LEG.forEach((id,i)=>{const v=t.ratings&&t.ratings[i];if(v)r[id]=v});
+  d.staff.push(newStaff({id:t.id,name:t.name||'',spec:t.spec||'',ratings:r,courses:t.courses||0,legacyVisits:t.visits||0,strengths:t.strengths||'',weaknesses:t.weaknesses||'',notes:t.notes||''}))});
+  return norm(d)}
+function load(){
+  try{const s=localStorage.getItem(KEY);if(s)return norm(JSON.parse(s))}catch(e){}
+  try{const o=JSON.parse(localStorage.getItem(OLD));if(o&&o.ts){const d=migrateV1(o);setTimeout(()=>toast('✅ تم نقل بيانات النسخة السابقة ('+d.staff.length+')','ok'),400);return d}}catch(e){}
+  return blank()}
+let D=load(),R={v:'dash'};
+function as(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){toast('⚠️ تعذر الحفظ في المتصفح — صدّري نسخة احتياطية','err')}}
+function saveD(m){as();if(m)toast('💾 تم الحفظ','ok')}
+function touch(s){s.updated=Date.now();as()}
+function byId(id){return D.staff.find(s=>s.id===id)}
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function jobN(k){const j=JOBS.find(x=>x.k===k);return j?j.n:k||'—'}
+function jobM(k){const j=JOBS.find(x=>x.k===k);return j?j.m:''}
+function modelN(k){return MODELS[k]?MODELS[k].name:'بدون نموذج تقييم'}
+function col(id){return CL[id%CL.length]}
+
+/* ═══════════ الحساب (وفق آلية الدليل) ═══════════
+   التقدير الموزون = مجموع (التقدير × الوزن) ÷ مجموع أوزان البنود المقدّرة
+   التقدير العام = تقريب التقدير الموزون لأقرب عدد صحيح — يُعتمد عند اكتمال جميع البنود */
+function calc(s){const m=MODELS[s.model];if(!m)return{has:false,n:0,f:0,score:null,final:null,comp:0,pct:0,complete:false};
+  let sw=0,sr=0,f=0;m.items.forEach(it=>{const r=s.ratings[it.id];if(r){sw+=it.w;sr+=r*it.w;f++}});
+  const n=m.items.length,score=sw?sr/sw:null,complete=f===n;
+  return{has:true,n,f,score,complete,final:complete?Math.round(score):null,comp:Math.round(f/n*100),pct:score?Math.round(score/5*100):0}}
+function fmt(v){return v==null?'—':v.toFixed(2)}
+function sCol(v){return v==null?'var(--tm)':v>=4?'var(--em)':v>=3?'var(--am)':'var(--ro)'}
+function rCls(v){return v>=4?'hi':v===3?'mi':'lo'}
+
+/* ═══════════ التنقل ═══════════ */
+function go(h){if(location.hash==='#'+h)route();else location.hash=h}
+window.addEventListener('hashchange',route);
+function route(){const h=(location.hash||'#dash').slice(1).split('/');
+  if(h[0]==='p'&&byId(+h[1]))R={v:'p',id:+h[1],tab:h[2]||'eval'};
+  else if(['dash','staff','school','models','reports'].includes(h[0]))R={v:h[0]};else R={v:'dash'};
+  renderAll();if(window.innerWidth<=900&&document.getElementById('sb').classList.contains('open'))togSB();window.scrollTo(0,0)}
+function renderAll(){renderSide();renderList();
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.r===R.v));
+  ({dash:vDash,staff:vStaff,school:vSchool,models:vModels,reports:vReports,p:vProfile})[R.v]()}
+function setHead(t,btns){document.getElementById('pgT').textContent=t;
+  document.getElementById('hdBtns').innerHTML=(btns||'')+`<span class="bdg bdg-m">${esc(D.school.year||'')}</span>`}
+
+/* ═══════════ الشريط الجانبي ═══════════ */
+function jobOpts(sel){return JOBS.map(j=>`<option value="${j.k}"${j.k===sel?' selected':''}>${j.n}</option>`).join('')}
+document.getElementById('qJ').innerHTML=jobOpts('teacher');
+function renderSide(){
+  document.getElementById('sbSub').textContent=D.school.name||'ملفات المعلمات والموظفات'}
+function renderList(){const el=document.getElementById('sList'),q=(document.getElementById('qS').value||'').trim();
+  const L=D.staff.filter(s=>!q||s.name.includes(q));
+  if(!L.length){el.innerHTML=`<div style="text-align:center;padding:24px 8px;color:var(--tm);font-size:11px">${D.staff.length?'لا نتائج':'لا توجد منسوبات'}</div>`;return}
+  el.innerHTML=L.map(s=>{const c=calc(s),ac=R.v==='p'&&R.id===s.id;
+    return`<div class="ti${ac?' act':''}" onclick="go('p/${s.id}/${ac?R.tab:'eval'}')"><div class="ti-av" style="background:${col(s.id)}">${esc(s.name[0]||'؟')}</div><div class="ti-info"><div class="ti-n">${esc(s.name)}</div><div class="ti-s">${esc(jobN(s.job))}${s.spec?' — '+esc(s.spec):''}</div></div><div class="ti-avg" style="color:${sCol(c.score)}">${c.score==null?'—':c.score.toFixed(1)}</div></div>`}).join('')}
+function quickAdd(){const n=document.getElementById('qN').value.trim(),j=document.getElementById('qJ').value;
+  if(!n){toast('⚠️ أدخلي الاسم','err');return}
+  const s=newStaff({id:D.nId++,name:n,job:j,model:jobM(j)});D.staff.push(s);as();
+  document.getElementById('qN').value='';toast('✅ تمت إضافة '+n,'ok');go('p/'+s.id+'/info')}
+
+/* ═══════════ النظرة العامة ═══════════ */
+function ago(t){const d=(Date.now()-t)/60000;if(d<1)return'الآن';if(d<60)return'قبل '+Math.round(d)+' دقيقة';if(d<1440)return'قبل '+Math.round(d/60)+' ساعة';return'قبل '+Math.round(d/1440)+' يوم'}
+function vDash(){setHead('النظرة العامة','<span class="bdg bdg-em"><span class="bdot"></span>دورة الأداء</span>');
+  const ct=document.getElementById('mnCt');
+  if(!D.staff.length){ct.innerHTML=`<div class="empty"><div class="em">📋</div><h2 style="font-family:Cairo;font-size:20px;margin-bottom:6px">مرحباً بك</h2><p style="font-size:13px;margin-bottom:14px">ابدئي بإدخال بيانات المدرسة، ثم أضيفي المعلمات والموظفات</p><button class="mb mb-cy" onclick="go('school')">🏫 إعدادات المدرسة</button> <button class="mb mb-em" onclick="go('staff')">👩‍🏫 إضافة المنسوبات</button></div>`;return}
+  const ev=D.staff.filter(s=>MODELS[s.model]),cs=ev.map(calc),done=cs.filter(c=>c.complete).length,
+    evMiss=ev.filter(s=>{const e=evCalc(s);return e.tot-e.na>e.y}),
+    r1=ev.filter(s=>!rvDone(s)[0]),r2=ev.filter(s=>!rvDone(s)[1]),
+    vt=D.staff.filter(s=>VIS_MODELS.includes(s.model)),vDoneN=vt.reduce((a,s)=>a+vsCount(s),0),vTot=vt.length*3;
+  let h='';
+  if(!D.school.name)h+=`<div class="note-box note-warn">⚠️ لم تُدخل بيانات المدرسة بعد — تظهر في ترويسة جميع التقارير المطبوعة. <a href="#school" style="color:var(--am)">إدخالها الآن</a></div>`;
+  h+=`<div class="ov-stats">
+   <div class="ov-s"><div class="ov-s-ic" style="background:rgba(52,211,153,.1)">👩‍🏫</div><div class="ov-s-lb">المنسوبات</div><div class="ov-s-v" style="color:var(--em)">${D.staff.length}</div><div class="ov-s-sub">${ev.length} مشمولة بنموذج تقييم</div></div>
+   <div class="ov-s"><div class="ov-s-ic" style="background:rgba(56,189,248,.1)">✅</div><div class="ov-s-lb">التقييمات المكتملة</div><div class="ov-s-v" style="color:var(--cy)">${done}</div><div class="ov-s-sub">غير مكتملة: ${ev.length-done}</div></div>
+   <div class="ov-s"><div class="ov-s-ic" style="background:rgba(251,113,133,.1)">📎</div><div class="ov-s-lb">شواهد ناقصة</div><div class="ov-s-v" style="color:var(--ro)">${evMiss.length}</div><div class="ov-s-sub">منسوبة لم تكتمل شواهدها</div></div>
+   <div class="ov-s"><div class="ov-s-ic" style="background:rgba(251,191,36,.1)">🗓️</div><div class="ov-s-lb">مراجعات لم تتم</div><div class="ov-s-v" style="color:var(--am)">${r1.length+r2.length}</div><div class="ov-s-sub">الأولى: ${r1.length} · الثانية: ${r2.length}</div></div>
+   <div class="ov-s"><div class="ov-s-ic" style="background:rgba(167,139,250,.1)">👁️</div><div class="ov-s-lb">الزيارات الصفية المنفذة</div><div class="ov-s-v" style="color:var(--vi)">${vDoneN}</div><div class="ov-s-sub">المتبقية: ${vTot-vDoneN} من ${vTot}</div></div>
+  </div>`;
+  h+=`<div class="card"><div class="card-t">📋 متابعة المنسوبات<span class="sp-r"><button class="mb mb-am" onclick="printDoc(schoolHTML())">🖨️ طباعة الملخص</button></span></div><div class="tbl-w"><table class="tbl"><thead><tr><th class="r">الاسم</th><th>المسمى</th><th>التقدير الموزون</th><th>التقدير العام</th><th>اكتمال التقييم</th><th>الشواهد</th><th>المراجعات</th><th>الزيارات</th></tr></thead><tbody>`;
+  D.staff.forEach(s=>{const c=calc(s),ep=evCalc(s).pct,r=rvDone(s),vis=VIS_MODELS.includes(s.model);
+    h+=`<tr><td class="nm r" onclick="go('p/${s.id}/eval')">${esc(s.name)}</td><td><span class="sp">${esc(jobN(s.job))}</span></td><td style="font-family:Cairo;font-weight:800;color:${sCol(c.score)}">${fmt(c.score)}</td><td>${c.final?`<b style="color:${sCol(c.final)}">${c.final}</b> — ${RL[c.final]}`:'<span style="color:var(--tm)">'+(c.has?'لم يكتمل':'—')+'</span>'}</td><td>${c.has?`<span class="mini-bar"><i style="width:${c.comp}%"></i></span>${c.f}/${c.n}`:'—'}</td><td style="font-family:Cairo;font-weight:800;color:${pCol(ep)};cursor:pointer" onclick="go('p/${s.id}/evid')">${c.has&&ep!=null?ep+'%':'—'}</td><td style="cursor:pointer" onclick="go('p/${s.id}/rev')">${c.has?`<span class="dot ${r[0]?'ok':''}" title="الأولى"></span><span class="dot ${r[1]?'ok':''}" title="الثانية"></span>`:'—'}</td><td style="cursor:pointer" onclick="go('p/${s.id}/vis')">${vis?vsCount(s)+'/3':'—'}</td></tr>`});
+  h+=`</tbody></table></div></div>`;
+  const rec=[...D.staff].sort((a,b)=>(b.updated||0)-(a.updated||0)).slice(0,6);
+  h+=`<div class="card"><div class="card-t">🕘 آخر التحديثات</div><div class="tbl-w"><table class="tbl"><tbody>${rec.map(s=>`<tr><td class="nm r" onclick="go('p/${s.id}/info')">${esc(s.name)}</td><td>${esc(jobN(s.job))}</td><td style="color:var(--tm)">${ago(s.updated||Date.now())}</td></tr>`).join('')}</tbody></table></div></div>`;
+  ct.innerHTML=h}
+
+/* استيراد الأسماء من Excel / CSV */
+function guessJob(t){t=t||'';if(/وكيل/.test(t))return'deputy';if(/مدير/.test(t))return'principal';if(/موجه|مرشد/.test(t))return'counselor';if(/مختبر/.test(t))return'lab';if(/نشاط/.test(t))return'activity';if(/صحي/.test(t))return'health';if(/رياض|روضة/.test(t))return'kg';if(/إدار|ادار/.test(t))return'admin';return''}
+function xlsImp(){document.getElementById('xIn').click()}
+function loadXLSX(){return new Promise((ok,no)=>{if(window.XLSX)return ok();const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';sc.onload=ok;sc.onerror=no;document.head.appendChild(sc)})}
+function hdXls(ev){const f=ev.target.files[0];ev.target.value='';if(!f)return;
+  loadXLSX().then(()=>{const r=new FileReader();r.onload=e=>{try{const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'}),ws=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''}).map(r=>r.map(x=>String(x).trim()));
+    let hi=rows.findIndex(r=>r.some(c=>/الاسم/.test(c))),col={n:0,sp:-1,sb:-1,j:-1};
+    if(hi>=0){const H=rows[hi];H.forEach((c,k)=>{if(/الاسم/.test(c)&&col.n===0)col.n=k;else if(/التخصص/.test(c))col.sp=k;else if(/المادة/.test(c))col.sb=k;else if(/المسمى|الوظيفة|العمل/.test(c))col.j=k})}
+    const defJ=(document.getElementById('bulkJ')||{}).value||'teacher',names=new Set(D.staff.map(s=>s.name));let k=0,dup=0;
+    rows.slice(hi+1).forEach(r=>{const n=r[col.n];if(!n||/^\d+$/.test(n))return;if(names.has(n)){dup++;return}names.add(n);
+      const j=(col.j>=0&&guessJob(r[col.j]))||defJ;D.staff.push(newStaff({id:D.nId++,name:n,job:j,model:jobM(j),spec:col.sp>=0?r[col.sp]:'',subject:col.sb>=0?r[col.sb]:''}));k++});
+    as();renderAll();toast(k?'✅ تم استيراد '+k+(dup?' (تجاهل '+dup+' مكرر)':''):'⚠️ لم يُعثر على أسماء جديدة',k?'ok':'err')}catch(er){toast('⚠️ تعذر قراءة الملف','err')}};r.readAsArrayBuffer(f)})
+  .catch(()=>toast('⚠️ يتطلب الاستيراد من Excel اتصالًا بالإنترنت — يمكنك نسخ الأسماء ولصقها','err'))}
+
+/* ═══════════ المعلمات والموظفات ═══════════ */
+function vStaff(){setHead('المعلمات والموظفات');
+  let h=`<div class="card"><div class="card-t">➕ إضافة منسوبة</div><div class="grid3">
+   <div class="fg"><label>الاسم *</label><input class="fi" id="aN" onkeydown="if(event.key==='Enter')addFull()"></div>
+   <div class="fg"><label>المسمى الوظيفي</label><select class="fs" id="aJ">${jobOpts('teacher')}</select></div>
+   <div class="fg"><label>التخصص</label><input class="fi" id="aS" list="specL"></div>
+   <div class="fg"><label>المادة / المواد</label><input class="fi" id="aM"></div>
+   <div class="fg"><label>الصفوف المسندة</label><input class="fi" id="aC" placeholder="مثال: ثاني متوسط / أول ثانوي"></div>
+   <div class="fg" style="display:flex;align-items:flex-end"><button class="btn-add" onclick="addFull()">➕ إضافة</button></div>
+  </div><datalist id="specL">${SPECS.map(s=>`<option value="${s}">`).join('')}</datalist>
+  <details style="margin-top:10px"><summary class="hint" style="cursor:pointer">إضافة عدة أسماء دفعة واحدة / استيراد من Excel</summary>
+   <div style="margin-top:8px"><textarea class="fa" id="bulk" placeholder="اسم في كل سطر — ويمكن إضافة التخصص بعد فاصلة، مثل:&#10;منال الحربي، احياء&#10;أمل السعوي، رياضيات"></textarea>
+   <div style="display:flex;gap:8px;align-items:center;margin-top:6px"><select class="fs" id="bulkJ" style="max-width:220px">${jobOpts('teacher')}</select><button class="mb mb-em" onclick="addBulk()">➕ إضافة الكل</button><button class="mb mb-cy" onclick="xlsImp()">📊 استيراد ملف Excel</button><span class="hint">ملف Excel: عمود «الاسم» إلزامي، و«التخصص» و«المادة» و«المسمى الوظيفي» اختيارية. تُتجاهل الأسماء المكررة.</span></div></div>
+  </details></div>`;
+  h+=`<div class="card"><div class="card-t">👩‍🏫 قائمة المنسوبات (${D.staff.length})</div>`;
+  if(!D.staff.length)h+=`<div class="empty" style="padding:24px">لا توجد منسوبات بعد</div>`;
+  else{h+=`<div class="tbl-w"><table class="tbl"><thead><tr><th>م</th><th class="r">الاسم</th><th>المسمى الوظيفي</th><th>نموذج التقييم</th><th>التخصص</th><th>المادة</th><th>اكتمال التقييم</th><th></th></tr></thead><tbody>`;
+   D.staff.forEach((s,i)=>{const c=calc(s);h+=`<tr><td>${i+1}</td><td class="nm r" onclick="go('p/${s.id}/info')">${esc(s.name)}</td><td>${esc(jobN(s.job))}</td><td style="font-size:10.5px">${MODELS[s.model]?esc(modelN(s.model).replace('نموذج تقييم أداء ','')):'<span style="color:var(--tm)">—</span>'}</td><td>${esc(s.spec)||'—'}</td><td>${esc(s.subject)||'—'}</td><td>${c.has?c.f+'/'+c.n:'—'}</td><td style="white-space:nowrap"><button class="mb" onclick="go('p/${s.id}/info')">✏️ تعديل</button> <button class="mb mb-ro" onclick="delS(${s.id})">✕</button></td></tr>`});
+   h+=`</tbody></table></div>`}
+  h+=`</div>`;document.getElementById('mnCt').innerHTML=h}
+function addFull(){const n=document.getElementById('aN').value.trim();if(!n){toast('⚠️ أدخلي الاسم','err');return}
+  const j=document.getElementById('aJ').value;
+  D.staff.push(newStaff({id:D.nId++,name:n,job:j,model:jobM(j),spec:document.getElementById('aS').value.trim(),subject:document.getElementById('aM').value.trim(),classes:document.getElementById('aC').value.trim()}));
+  as();toast('✅ تمت إضافة '+n,'ok');renderAll();setTimeout(()=>document.getElementById('aN').focus(),0)}
+function addBulk(){const j=document.getElementById('bulkJ').value;let k=0;
+  document.getElementById('bulk').value.split(/\n/).forEach(l=>{const p=l.split(/[،,\t]/).map(x=>x.trim());if(!p[0])return;
+    D.staff.push(newStaff({id:D.nId++,name:p[0],job:j,model:jobM(j),spec:p[1]||''}));k++});
+  if(!k){toast('⚠️ لا توجد أسماء','err');return}as();toast('✅ تمت إضافة '+k,'ok');renderAll()}
+function delS(id){const s=byId(id);if(!s||!confirm('حذف '+s.name+' وجميع بياناتها؟'))return;
+  D.staff=D.staff.filter(x=>x.id!==id);as();toast('🗑️ تم الحذف','ok');if(R.v==='p')go('staff');else renderAll()}
+
+/* ═══════════ إعدادات المدرسة ═══════════ */
+const SF=[['name','اسم المدرسة','مثال: المتوسطة والثانوية الأولى بالروضة - مسارات'],['edu','إدارة التعليم','مثال: الإدارة العامة للتعليم بمنطقة القصيم'],['office','مكتب التعليم / المحافظة','مثال: محافظة رياض الخبراء'],['stage','المرحلة','مثال: المتوسطة والثانوية'],['year','العام الدراسي','مثال: ١٤٤٨ هـ'],['principal','اسم المديرة',''],['deputy','اسم الوكيلة (اختياري)','']];
+function vSchool(){setHead('إعدادات المدرسة');const S=D.school;
+  let h=`<div class="note-box note-info">تُدخل هذه البيانات مرة واحدة، وتظهر تلقائيًا في ترويسة وتواقيع جميع التقارير المطبوعة. تُحفظ تلقائيًا أثناء الكتابة.</div>
+  <div class="card"><div class="card-t">🏫 بيانات المدرسة</div><div class="grid2">`;
+  SF.forEach(([k,l,p])=>{h+=`<div class="fg"><label>${l}</label><input class="fi" value="${esc(S[k])}" placeholder="${esc(p)}" oninput="setSch('${k}',this.value)"></div>`});
+  h+=`</div></div><div class="card"><div class="card-t">🖼️ شعار المدرسة (اختياري)</div><div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+   <div class="logo-prev">${S.logo?`<img src="${S.logo}" alt="">`:'لا يوجد شعار'}</div>
+   <div style="display:flex;flex-direction:column;gap:8px"><button class="mb mb-cy" onclick="document.getElementById('lgIn').click()">📁 اختيار صورة</button>${S.logo?`<button class="mb mb-ro" onclick="setSch('logo','');vSchool();renderSide()">✕ إزالة الشعار</button>`:''}<span class="hint">يُصغَّر تلقائيًا ليناسب التخزين. يظهر وسط ترويسة التقارير.</span></div></div></div>
+  <div class="card"><div class="card-t">👁️ معاينة الترويسة</div><div style="background:#fff;border-radius:8px;padding:14px">${prHead()}</div></div>`;
+  document.getElementById('mnCt').innerHTML=h}
+let schT;function setSch(k,v){D.school[k]=v;clearTimeout(schT);schT=setTimeout(()=>{as();renderSide();if(R.v==='school'&&k!=='logo'){const p=document.querySelector('.card:last-child div[style*="background:#fff"]');if(p)p.innerHTML=prHead()}},250)}
+function hdLogo(ev){const f=ev.target.files[0];ev.target.value='';if(!f)return;const r=new FileReader();
+  r.onload=e=>{const im=new Image();im.onload=()=>{const M=320,sc=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement('canvas');
+    c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);
+    D.school.logo=c.toDataURL('image/png');as();renderSide();vSchool();toast('✅ تم حفظ الشعار','ok')};im.onerror=()=>toast('⚠️ تعذر قراءة الصورة','err');im.src=e.target.result};
+  r.readAsDataURL(f)}
+
+/* ═══════════ نماذج التقييم ═══════════ */
+function vModels(){setHead('نماذج التقييم');
+  let h=`<div class="note-box note-info">النماذج الثمانية لشاغلي الوظائف التعليمية داخل نطاق المدرسة، بعناصرها وأوزانها كما في <b>الدليل الإرشادي لإدارة الأداء الوظيفي لشاغلي الوظائف التعليمية — الإصدار الثاني</b>.<br>
+  آلية الاحتساب: يُضرب تقدير كل عنصر (1–5) في وزنه النسبي، وتُجمع التقديرات الموزونة، ويُقرَّب الناتج لأقرب عدد صحيح للحصول على التقدير العام.<br>
+  مستويات التقدير: ${[5,4,3,2,1].map(v=>`<b>${v}</b> ${RL[v]}`).join(' · ')}</div><div class="grid2">`;
+  Object.entries(MODELS).forEach(([k,m])=>{const sum=m.items.reduce((a,i)=>a+i.w,0),cnt=D.staff.filter(s=>s.model===k).length;
+    h+=`<div class="card" style="margin-bottom:0"><div class="card-t">📘 ${esc(m.name)}<span class="sp-r"><span class="sp">${cnt} منسوبة</span><button class="mb" onclick="prevDoc(evListHTML('${k}'),'قائمة الشواهد')">📎 قائمة الشواهد</button></span></div><table class="tbl md-tbl"><thead><tr><th>م</th><th class="r">عنصر التقييم</th><th>الوزن</th><th>الشواهد</th></tr></thead><tbody>${m.items.map((it,i)=>`<tr><td>${i+1}</td><td class="r" style="color:var(--tp)">${esc(it.n)}</td><td>${it.w}%</td><td>${evList(it.id).length}</td></tr>`).join('')}<tr><td></td><td class="r"><b>المجموع</b></td><td class="md-sum">${sum}%</td><td></td></tr></tbody></table></div>`});
+  h+=`</div><p class="hint" style="margin-top:14px">الوظائف الإدارية لا تخضع لهذه النماذج، ويمكن إضافتها في قائمة المنسوبات لمتابعتها دون تقييم.</p>`;
+  document.getElementById('mnCt').innerHTML=h}
+
+/* ═══════════ الشواهد ═══════════
+   مستنتجة من «سلالم التقدير لقياس مستوى الإتقان لعناصر التقييم» في الدليل الإرشادي (الإصدار الثاني):
+   كل شاهد يقابل ممارسة واردة في أوصاف المستويات لذلك العنصر. القائمة قابلة للتعديل من داخل المنصة. */
+const EV={
+ c1:['سجل الحضور والانصراف والالتزام بالمواعيد','الالتزام بالأنظمة واللوائح وقواعد السلوك الوظيفي','المبادرة بتحمّل المسؤوليات ودعم الزملاء في تحسين الأداء','ممارسات تعزز قيم الانضباط والولاء والانتماء بين الزملاء والطلاب','حلول عملية أو مبادرات لمعالجة التحديات وتحسين جودة الأداء المدرسي'],
+ c2:['المشاركة في الأنشطة المهنية (ورش، دورات، لقاءات)','المشاركة في مجتمعات التعلم المهنية','نقل الخبرات للزملاء ونشر الممارسات الجيدة','تنظيم أو تنسيق أنشطة مهنية (ورش، لقاءات، مجتمعات تعلم مهنية)','مبادرات نوعية أو بحوث أو تمثيل المدرسة في الفعاليات والمؤتمرات التعليمية'],
+ c3:['سجل التواصل مع أولياء الأمور','معلومات واضحة لأولياء الأمور عن أداء المتعلمين','إشراك أولياء الأمور في متابعة تعلم أبنائهم واقتراح حلول عملية','تحليلات وتوصيات عملية مقدمة لأولياء الأمور','مبادرات لتعزيز العلاقة بين الأسرة والمدرسة (لقاءات دورية، ورش توعية، منصات رقمية)'],
+ t1:['إستراتيجيات تدريس متنوعة ومناسبة للموقف التعليمي','إستراتيجيات تراعي الفروق الفردية','دمج التقنيات التعليمية والأنشطة الإثرائية','أنشطة تعزز التفكير الناقد والإبداع','مشاركة الزملاء أفضل الممارسات التدريسية'],
+ t2:['تشخيص مواطن الضعف لدى المتعلمين','خطط علاجية فردية وجماعية لمعالجة الفاقد التعليمي','دعم إضافي للمتعلمين ذوي الأداء الضعيف','متابعة التقدم بانتظام بأدوات تقييم متنوعة','إشراك المتعلمين في وضع أهداف تعلم شخصية'],
+ t3:['خطة تعلم تتضمن أهدافًا تعليمية واضحة ومحددة','خطة تراعي الفروق الفردية وتغطي المحتوى التعليمي','أنشطة إثرائية تعزز التعاون الجماعي ومهارات التفكير العليا','مراجعة الخطط وتطويرها بناءً على تحليل أداء الطلاب ونتائج التقييم','مشاركة الزملاء في تطوير الخطط'],
+ t4:['توظيف التقنيات والوسائل التعليمية المناسبة للمحتوى','تكييف التقنيات والوسائل لتلبية الاحتياجات الفردية والجماعية','أنشطة صفية تفاعلية باستخدام الأدوات التقنية المتاحة','تدريب الزملاء على استخدام الوسائل التقنية'],
+ t5:['بيئة صفية آمنة ومحفزة','أنشطة تشجع على التعاون والعمل الجماعي','ترسيخ القيم الإيجابية والانضباط الذاتي','أنشطة صفية ولاصفية تعزز الدافعية'],
+ t6:['القوانين والتعليمات الصفية','إشراك المتعلمين في وضع القوانين الصفية','إستراتيجيات للحد من السلوكيات السلبية','التعاون مع الزملاء لتطوير خطط الإدارة الصفية'],
+ t7:['تحليل نتائج المتعلمين','بيانات من مصادر متعددة (اختبارات، أنشطة صفية، ملاحظات)','تقارير تشخيصية للاحتياجات الفردية والجماعية','تقارير تحليلية توضح الفجوات التعليمية وتقترح معالجات','مشاركة نتائج التحليل مع الزملاء'],
+ t8:['أدوات تقويم متنوعة (كتابية، عملية، إلكترونية)','أدوات تحليلية وتقنية لتتبع تقدم المتعلمين','مقترحات لتحسين طرق التدريس بناءً على بيانات التقويم','مشاركة نتائج التحليل مع الزملاء'],
+ a1:['خطة لبرامج وفعاليات النشاط الطلابي معتمدة ومزمنة وفق جدول زمني للتنفيذ','مواءمة الخطة مع الخطة الوزارية والإدارة التعليمية والاحتياج الفعلي للمدرسة','قياس أثر البرامج والفعاليات'],
+ a2:['تهيئة البيئة المدرسية للبرامج والأنشطة الطلابية','الاستفادة من الممكنات والتقنيات الحديثة لتعزيز الدافعية للمشاركة'],
+ a3:['تصنيف المتعلمين وفق احتياجاتهم وميولهم للأنشطة','تقديم الأنشطة المناسبة لقدرات المتعلمين ومهاراتهم','تغذية راجعة للمتعلمين بنقاط القوة ومجالات التحسين'],
+ a4:['خطة للتهيئة والإعداد لمشاركة المتعلمين في الأنشطة','دعم الفرص التطوعية والأفكار الإبداعية للطلبة','إنجازات محلية أو إقليمية أو دولية'],
+ h1:['تنفيذ الخطة المشتركة للبرامج الصحية المدرسية','إدخال بيانات التنفيذ في الأنظمة الإلكترونية','تقارير إنجاز دورية','قياس أثر التوعية الصحية على المتعلمين وتوثيقه'],
+ h2:['حصر الحالات الصحية للمتعلمين','تصنيف الحالات الصحية','متابعة الحالات الصحية دوريًا','الخدمات المقدمة وتوثيق أثرها'],
+ h3:['تفقد البيئة الصحية المدرسية بشكل منتظم','إرشادات صحية واضحة والتأكد من الالتزام بها','برامج توعوية وأنشطة صحية متنوعة تعزز الوقاية'],
+ k1:['خطة متكاملة شاملة لجميع معايير التعلم','أهداف دقيقة وقابلة للقياس','جدول زمني دقيق','متابعة مستمرة وتقييم دوري للخطة'],
+ k2:['خبرات تعلم مرنة ومتجددة وفق احتياجات كل طفل','خبرات تعلم متوافقة مع أفضل الممارسات العالمية'],
+ k3:['مادة علمية دقيقة وشاملة تستند إلى مصادر موثوقة','مادة علمية محدثة بالكامل وفق أحدث المصادر العلمية'],
+ k4:['إستراتيجيات تدريس متنوعة تراعي احتياجات المتعلمين','متابعة نتائج الإستراتيجيات','أثر موثق في نواتج التعلم'],
+ k5:['إشراك الأسرة في خطط النمو والتعلم مع تحديد أدوار واضحة','دعم متواصل وتوجيه مستمر لكل متعلم','توثيق إلكتروني للأثر'],
+ k6:['بيئة تعليمية آمنة ومعززة للنمو والتعلم','فرص متنوعة للتفاعل بين المتعلمين','استثمار الممكنات الحديثة في بيئة التعلم'],
+ k7:['فرص تفاعلية متنوعة ومستمرة','أنشطة ومشاريع جماعية لتعزيز النمو','فرص تدعم التفكير النقدي وحل المشكلات'],
+ k8:['أدوات رصد وقياس احتياجات المتعلمين','ملف إنجاز لكل متعلم','تشخيص فردي لكل متعلم','خطط مخصصة لتحسين أداء المتعلم'],
+ k9:['توظيف نتائج التقويم في التخطيط لخبرات وأنشطة لاحقة','معالجة الفجوات التعليمية','خطط تعليمية مخصصة لكل متعلم'],
+ k10:['إشراك الأسرة في نتائج التقويم بشكل دوري','توجيهات للأسرة حول دورها في دعم تقويم الطفل','متابعة تنفيذ التوجيهات وتقديم التغذية الراجعة للأسرة'],
+ k11:['متابعة تقدم كل طفل بشكل دوري ومنهجي','دعم مخصص لمعالجة الفجوات في الأداء الفردي','توثيق الأثر وقياسه دوريًا'],
+ k12:['أنشطة مخصصة لتعزيز مهارات المستقبل (التفكير النقدي، الإبداع، التعاون، حل المشكلات)','برامج متقدمة تهيئ المتعلمين لمتطلبات المستقبل'],
+ k13:['أنشطة صفية ولاصفية لغرس القيم والسلوكيات الأخلاقية','توثيق أثر القيم على الشخصية والاتجاهات'],
+ l1:['خطة يومية معتمدة لأنشطة المختبر','توافق الخطة مع جدول المعلمين','متابعة أثر الخطة وتطويرها'],
+ l2:['تطبيق الأسس والمفاهيم الفنية في الأنشطة المختلفة','مساعدة المعلمين والطلبة في تشغيل الأجهزة واستخدام المواد','دورات أو ورش في الإسعافات الأولية والأمن والسلامة'],
+ l3:['حصر الاحتياجات من الأدوات والمستلزمات','توفير الأدوات والمستلزمات اللازمة للتجارب','خطط بديلة للطوارئ'],
+ l4:['لوحات ونشرات استرشادية للاستخدام السليم للأدوات','حفظ الأجهزة والمحاليل والأدوات في أماكن مخصصة وآمنة','التأكد من سلامة المواد الكيميائية وصلاحيتها','خطة موثقة لإدارة المخاطر'],
+ l5:['تحضير المختبر وتجهيزه بانتظام','متابعة النظافة وترتيب الأجهزة والمواد قبل وبعد الاستخدام','لوحات ونشرات إرشادية لاستخدام الأجهزة والأدوات'],
+ l6:['تهيئة الأجهزة للمعلمين وتسليمها','تخزين الأجهزة بطريقة سليمة','متابعة جاهزية الأجهزة'],
+ l7:['تقارير أسبوعية لأنشطة ومهام المختبر','توضيح التحديات والصعوبات والحلول المقترحة'],
+ l8:['تقارير دورية عن حالة الأجهزة والمعدات','تحديد الأعطال والاحتياج للصيانة ورفعها للجهات المختصة','متابعة تنفيذ الصيانة'],
+ g1:['تدخلات تربوية للمتعلمين متكرري التأخر الصباحي والغياب','الرجوع إلى الأدلة الإرشادية','إشراك الجهات ذات العلاقة والمتخصصة','قياس أثر التدخلات على الانضباط المدرسي'],
+ g2:['برامج إرشادية مبنية على دراسة واقع الطلبة','متابعة تقدم الطلبة دوريًا وتقديم التغذية الراجعة','التنويع في البرامج والأساليب (ورش، لقاءات، مبادرات، متابعة فردية)','قياس أثر البرامج وتطويرها'],
+ g3:['خطة لبرامج التوجيه الطلابي مبنية على تشخيص الواقع واحتياجات المتعلمين','تغطية الخطة لكافة الفئات المستهدفة','تقييم البرامج بأدوات علمية وتطويرها'],
+ g4:['تصنيف حالات وفئات المتعلمين باستخدام أدوات علمية','الدعم المناسب لكل فئة وفق احتياجاتها','توظيف إستراتيجيات إرشادية متنوعة'],
+ g5:['اختيار القيم وفق دراسة سلوكيات المتعلمين واحتياجاتهم','برامج تعزيز القيم والسلوكيات الإيجابية','تقييم أثر أساليب التعزيز دوريًا'],
+ g6:['معالجات تربوية للمشكلات النفسية أو الاجتماعية بالرجوع إلى الأدلة الإرشادية','أدوات تحليلية وتقنية لتتبع تقدم المتعلمين','مشاركة المعلمين نتائج المعالجات'],
+ g7:['معلومات محدثة حول المسارات التعليمية والمهنية','نتائج مقاييس الميول المهنية','استشارات فردية حسب احتياجات كل متعلم','أنشطة مهنية (ورش، لقاءات)'],
+ g8:['برامج وخدمات لتعزيز التفوق الدراسي','برامج إثرائية للمتفوقين','معالجة التحديات التي تواجه المتفوقين'],
+ g9:['تدخلات تربوية للمتأخرين دراسيًا والمعيدين','الرجوع إلى الأدلة الإرشادية','إشراك الجهات ذات العلاقة وقياس الأثر'],
+ g10:['معلومات واضحة حول القواعد الأساسية للسلوك والمواظبة عبر قنوات متنوعة','ورش عمل توعوية للمتعلمين وأولياء أمورهم','تواصل استباقي مع أولياء الأمور بناءً على المؤشرات السلوكية'],
+ s1:['إعادة تنظيم الأعمال عند حدوث تغييرات (غياب معلمين، خلل في الموارد)','بدائل تشغيلية مبكرة للطوارئ (خطط بديلة للجداول أو الإشراف)','آليات أو دليل داخلي لإدارة الأزمات والأحداث الطارئة'],
+ s2:['المشاركة في تنفيذ مبادرات نوعية','تقويم المبادرات واقتراح تحسينات عملية','توظيف التقنية في متابعة المبادرات ونشرها','نشر التجارب المتميزة (تقارير، مؤتمرات، منصات مهنية)'],
+ s3:['تطبيق قواعد السلوك والمواظبة وفق الضوابط المنظمة','أساليب تربوية وقائية (برامج توعية، أنشطة تحفيزية)','معالجة المشكلات السلوكية بمشاركة أولياء الأمور','بيانات الانضباط ومتابعة أثر الإجراءات'],
+ s4:['إدارة الموارد وتوزيع المهام وفق خطة مسبقة','آليات لترشيد استخدام الموارد','إجراءات تصحيحية لحالات الهدر أو سوء الاستخدام'],
+ s5d:['المساهمة في تحديد مجالات التطوير المهني المناسبة لاحتياجات المنسوبات','متابعة أثر البرامج التدريبية وترجمتها إلى خطط تحسين فردية','جلسات إرشاد فردية أو جماعية للمعلمين'],
+ s5p:['خطة التطوير المهني للمدرسة','بيانات احتياجات التطوير المهني (استبيانات، نتائج تقييم، تقارير الأداء)','أهداف واضحة قابلة للقياس ضمن الخطة','مواءمة الخطة مع احتياجات تحسين نواتج التعلم والانضباط'],
+ s6:['أدوات متابعة تقدم الأداء','جلسات التغذية الراجعة وخطط التطوير الفردية والجماعية','متابعة تنفيذ الخطط وقياس أثرها','ربط مؤشرات الأداء الوظيفي بالتحفيز والتقدير'],
+ s7:['دعم تنفيذ برامج التطوير المهني لمنسوبات المدرسة وتقييمها','خطط تطوير فردية مبنية على نتائج التدريب','جلسات تبادل خبرات أو مجتمعات تعلم تطبيقية'],
+ s8:['تقييم الأداء مستندًا إلى مصادر التقويم والشواهد المناسبة','جلسات مراجعة ومناقشة مع المنسوبات','أدوات متنوعة إضافية لتقويم الأداء','تشجيع التقويم الذاتي'],
+ s9:['تشخيص مستويات الطلاب بأساليب متنوعة','برامج دعم للفئات المتأخرة أو المتفوقة','متابعة أثر التدخلات على نتائج الطلاب'],
+ s10:['خطة علاجية للفجوات التعليمية مبنية على نتائج التقويم المدرسي','خطط تطوير مبنية على تقارير التقويم المدرسي ونتائج الاختبارات الوطنية','متابعة تنفيذ برامج تحسين الأداء وقياس أثرها على مؤشرات المدرسة'],
+ s11d:['المشاركة في إعداد خطط مدرسية مكتملة وشاملة وفق منهجية علمية','المشاركة في تقييم الخطط','خطط بديلة'],
+ s11p:['خطط مدرسية مكتملة وشاملة وفق منهجية علمية','تشخيص واقع المدرسة وتحديد أولويات قابلة للقياس','ترابط الخطط (تعليمية، سلوكية، أنشطة)','مواءمة خطة المدرسة مع أولويات إستراتيجية الوزارة والاختبارات الوطنية'],
+ s12:['متابعة تنفيذ برامج ومشاريع الخطط المدرسية كاملة وتقييمها','معالجة التعثرات بخطط تصحيحية','آليات متابعة داخلية (لوحات مؤشرات، تقارير تحليلية)'],
+ s13:['تهيئة الفرص والإمكانات لمشاركة الطلاب في الأنشطة الصفية وغير الصفية','تقييم تنفيذ الأنشطة','ربط المشاركة بمستهدفات سلوكية ومعالجة معوقاتها'],
+ s14:['توظيف المنصات الرقمية المعتمدة في دعم عمليات التعليم والتعلم','تحليل تقارير المنصات لتحديد الفجوات الأكاديمية والسلوكية','ربط نتائج التحليل بخطط تحسين نواتج التعلم والانضباط'],
+ s15:['الإشراف على تنفيذ برامج وأنشطة تعزيز السلوك الإيجابي','متابعة أثر البرامج على الانضباط والحضور والمشاركة','أساليب وقائية تقلل السلوكيات السلبية'],
+ s16:['توفير بيئة مدرسية آمنة وجاذبة','إستراتيجيات تجعل البيئة محفزة على الانضباط والتعلم (تنظيم الجدول، توزيع الأنشطة)','متابعة أثر البيئة على سلوك الطلاب وانضباطهم ومعالجة المعوقات']
+};
+const EVS={y:'متوفر',n:'غير متوفر',na:'لا ينطبق'};
+function evList(el){return(EV[el]||[]).map((n,i)=>({id:el+'.'+(i+1),n})).filter(e=>!D.evHide[e.id]).concat(D.evExtra[el]||[])}
+function evCalc(s){const m=MODELS[s.model],r={tot:0,y:0,n:0,na:0,u:0,pct:null,per:{}};if(!m)return r;
+  m.items.forEach(it=>{const p={tot:0,y:0,n:0,na:0,u:0,pct:null};evList(it.id).forEach(e=>{const st=(s.evidence[e.id]||{}).st;p.tot++;if(st==='y')p.y++;else if(st==='n')p.n++;else if(st==='na')p.na++;else p.u++});
+    const d=p.tot-p.na;p.pct=d?Math.round(p.y/d*100):null;r.per[it.id]=p;['tot','y','n','na','u'].forEach(k=>r[k]+=p[k])});
+  const d=r.tot-r.na;r.pct=d?Math.round(r.y/d*100):null;return r}
+function pCol(p){return p==null?'var(--tm)':p>=80?'var(--em)':p>=50?'var(--am)':'var(--ro)'}
+let evEdit=false;
+function tEvid(s){const m=MODELS[s.model],ct=document.getElementById('tabCt');if(!m){noModel(s);return}
+  const E=evCalc(s);
+  let h=`<div class="ov-stats">
+   <div class="ov-s"><div class="ov-s-lb">الشواهد المطلوبة</div><div class="ov-s-v">${E.tot-E.na}</div><div class="ov-s-sub">من ${E.tot} (لا ينطبق: ${E.na})</div></div>
+   <div class="ov-s"><div class="ov-s-lb">متوفر</div><div class="ov-s-v" style="color:var(--em)">${E.y}</div></div>
+   <div class="ov-s"><div class="ov-s-lb">غير متوفر</div><div class="ov-s-v" style="color:var(--ro)">${E.n+E.u}</div><div class="ov-s-sub">منها لم تُحدَّد حالته: ${E.u}</div></div>
+   <div class="ov-s"><div class="ov-s-lb">نسبة توفر الشواهد</div><div class="ov-s-v" style="color:${pCol(E.pct)}">${E.pct==null?'—':E.pct+'%'}</div><div class="ov-s-sub">المتوفر ÷ (الكل − لا ينطبق)</div></div></div>
+  <div class="note-box note-info" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>الشواهد مستنتجة من سلالم التقدير لعناصر التقييم في الدليل. الشاهد الذي لم تُحدَّد حالته يُحسب غير متوفر.</span>
+   <span style="display:flex;gap:6px"><button class="mb ${evEdit?'mb-am':''}" onclick="evEdit=!evEdit;tEvid(byId(${s.id}))">${evEdit?'✓ إنهاء التعديل':'✏️ تعديل قائمة الشواهد'}</button><button class="mb mb-cy" onclick="prevDoc(evidHTML(byId(${s.id})),'تقرير توفر الشواهد')">👁️ معاينة التقرير</button><button class="mb mb-am" onclick="printDoc(evidHTML(byId(${s.id})))">🖨️ طباعة</button></span></div>`;
+  h+=`<div class="card" style="padding:16px 18px"><div class="card-t" style="margin-bottom:8px">🔗 رابط ملف المعلمة (ملف الإنجاز / مجلد الشواهد)</div><div class="ev-lk"><input class="fi" dir="ltr" placeholder="https://drive.google.com/..." value="${esc(s.portfolio||'')}" onchange="setPf(${s.id},this.value)">${s.portfolio?`<a class="mb mb-cy" href="${esc(s.portfolio)}" target="_blank" rel="noopener">↗ فتح الملف</a>`:''}</div><p class="hint" style="margin-top:6px">رابط مجلد المعلمة في Google Drive أو OneDrive أو غيره. ويمكن أيضًا إضافة رابط خاص لكل شاهد تحت خانة الملاحظة. تأكدي أن إعدادات المشاركة في درايف تسمح لكِ بفتح الرابط.</p></div>`;
+  if(evEdit)h+=`<div class="note-box note-warn">وضع تعديل القائمة: الإضافة والحذف يُطبَّقان على جميع المنسوبات اللاتي يشملهن العنصر. <button class="mb" onclick="evReset()">↺ استعادة القائمة الأصلية</button></div>`;
+  m.items.forEach((it,i)=>{const p=E.per[it.id];
+    h+=`<div class="card ev-card"><div class="card-t"><span>${i+1}. ${esc(it.n)}</span><span class="sp">${it.w}%</span><span class="sp-r"><span class="ev-pct" style="color:${pCol(p.pct)}">${p.y}/${p.tot-p.na}${p.pct==null?'':' — '+p.pct+'%'}</span>${evEdit?'':`<button class="mb" onclick="evAll(${s.id},'${it.id}')">✓ الكل متوفر</button>`}</span></div>`;
+    evList(it.id).forEach(e=>{const r=s.evidence[e.id]||{};
+      h+=`<div class="ev-row"><div class="ev-n">${esc(e.n)}</div>${evEdit?`<button class="mb mb-ro" onclick="evDel('${it.id}','${e.id}')">✕ حذف</button>`:`<div class="ev-bt">${Object.entries(EVS).map(([k,l])=>`<button class="evb s-${k}${r.st===k?' on':''}" onclick="setEv(${s.id},'${e.id}','${k}')">${l}</button>`).join('')}</div><div class="ev-in"><input class="fi ev-note" list="evNotes" placeholder="ملاحظة عن الشاهد..." value="${esc(r.note||'')}" onchange="setEvN(${s.id},'${e.id}',this.value)"><div class="ev-lk"><input class="fi ev-note" dir="ltr" placeholder="🔗 رابط الشاهد (درايف مثلًا)" value="${esc(r.link||'')}" onchange="setEvL(${s.id},'${e.id}',this.value)">${r.link?`<a class="mb mb-cy" href="${esc(r.link)}" target="_blank" rel="noopener" title="فتح الرابط">↗</a>`:''}</div></div>`}</div>`});
+    if(evEdit)h+=`<div class="ev-row"><input class="fi" id="evAdd_${it.id}" placeholder="شاهد جديد لهذا العنصر..." onkeydown="if(event.key==='Enter')evAdd('${it.id}')"><button class="mb mb-em" onclick="evAdd('${it.id}')">➕ إضافة</button></div>`;
+    h+=`</div>`});
+  h+=`<datalist id="evNotes"><option value="موجود في ملف الإنجاز"><option value="تمت مراجعته"><option value="يحتاج تحديث"><option value="لم يُقدَّم بعد"></datalist>`;
+  ct.innerHTML=h}
+function keepY(f){const y=window.scrollY;f();window.scrollTo(0,y)}
+function setEv(id,eid,st){const s=byId(id);if(!s)return;const r=s.evidence[eid]||{};if(r.st===st)delete r.st;else r.st=st;s.evidence[eid]=r;touch(s);keepY(renderAll)}
+function fixUrl(v){v=(v||'').trim();if(!v)return'';if(!/^https?:\/\//i.test(v))v='https://'+v;return v}
+function setEvL(id,eid,v){const s=byId(id);if(!s)return;const r=s.evidence[eid]||{};r.link=fixUrl(v);if(!r.link)delete r.link;else if(!r.st)r.st='y';s.evidence[eid]=r;touch(s);keepY(renderAll)}
+function setPf(id,v){const s=byId(id);if(!s)return;s.portfolio=fixUrl(v);touch(s);keepY(renderAll)}
+function setEvN(id,eid,v){const s=byId(id);if(!s)return;const r=s.evidence[eid]||{};r.note=v.trim();s.evidence[eid]=r;touch(s)}
+function evAll(id,el){const s=byId(id);if(!s)return;evList(el).forEach(e=>{const r=s.evidence[e.id]||{};r.st='y';s.evidence[e.id]=r});touch(s);keepY(renderAll)}
+function evAdd(el){const i=document.getElementById('evAdd_'+el),n=(i.value||'').trim();if(!n)return;(D.evExtra[el]=D.evExtra[el]||[]).push({id:el+'.x'+Date.now().toString(36),n});as();keepY(renderAll)}
+function evDel(el,eid){if(!confirm('حذف هذا الشاهد من القائمة لجميع المنسوبات؟'))return;
+  if(D.evExtra[el]&&D.evExtra[el].some(e=>e.id===eid))D.evExtra[el]=D.evExtra[el].filter(e=>e.id!==eid);else D.evHide[eid]=true;as();keepY(renderAll)}
+function evReset(){if(!confirm('استعادة قائمة الشواهد الأصلية المستنتجة من الدليل؟ (تُحذف الشواهد المضافة)'))return;D.evHide={};D.evExtra={};as();keepY(renderAll)}
+function noModel(s){document.getElementById('tabCt').innerHTML=`<div class="card soon-box"><div class="em">📘</div><h3>لا يوجد نموذج تقييم مرتبط</h3><p style="font-size:12px;margin-bottom:12px">المسمى «${esc(jobN(s.job))}» غير مشمول بنماذج تقييم شاغلي الوظائف التعليمية. يمكن ربطها بنموذج من البيانات الأساسية.</p><button class="mb mb-cy" onclick="go('p/${s.id}/info')">البيانات الأساسية</button></div>`}
+
+/* ═══════════ ملف المنسوبة ═══════════ */
+const TABS=[['info','البيانات الأساسية'],['eval','تقييم الأداء'],['evid','الشواهد'],['rev','المراجعة النصف سنوية'],['vis','الزيارات الصفية'],['rep','التقارير']];
+function vProfile(){const s=byId(R.id);if(!s){go('staff');return}
+  const c=calc(s),ep=evCalc(s).pct,i=D.staff.indexOf(s),pv=D.staff[i-1],nx=D.staff[i+1];
+  setHead('ملف '+s.name,`<button class="mb mb-em" onclick="saveD(true)">💾 حفظ</button><button class="mb mb-cy" onclick="expT()">📤 تصدير</button>${c.has?`<button class="mb mb-am" onclick="printEval(${s.id})">🖨️ طباعة التقييم</button>`:''}`);
+  let h=`<div class="pf-hd"><div class="pf-av" style="background:${col(s.id)}">${esc(s.name[0]||'؟')}</div>
+   <div class="pf-info"><h2>${esc(s.name)}</h2><div class="pf-sp">${esc(jobN(s.job))}${s.spec?' — '+esc(s.spec):''}${s.subject?' — '+esc(s.subject):''}</div><div class="pf-sp" style="font-size:10.5px;color:var(--tm);margin-top:2px">${esc(modelN(s.model))}</div></div>
+   <div class="pf-mt">${c.has?`<div class="pf-mt-i"><div class="pf-mt-lb">التقدير الموزون</div><div class="pf-mt-v" style="color:${sCol(c.score)}">${fmt(c.score)}</div></div>
+     <div class="pf-mt-i"><div class="pf-mt-lb">التقدير العام</div><div class="pf-mt-v" style="color:${sCol(c.final)};font-size:13px">${c.final?c.final+' — '+RL[c.final]:'لم يكتمل'}</div></div>
+     <div class="pf-mt-i"><div class="pf-mt-lb">اكتمال التقييم</div><div class="pf-mt-v" style="color:var(--cy)">${c.f}/${c.n}</div></div>
+     <div class="pf-mt-i"><div class="pf-mt-lb">توفر الشواهد</div><div class="pf-mt-v" style="color:${pCol(ep)}">${ep==null?'—':ep+'%'}</div></div>`:''}
+     <div class="pf-nav"><button class="mb" ${pv?`onclick="go('p/${pv.id}/${R.tab}')"`:'disabled'} title="السابقة">→</button><button class="mb" ${nx?`onclick="go('p/${nx.id}/${R.tab}')"`:'disabled'} title="التالية">←</button></div></div></div>`;
+  h+=`<div class="tabs">${TABS.map(([k,l,ph])=>`<button class="tab${R.tab===k?' on':''}" onclick="go('p/${s.id}/${k}')">${l}</button>`).join('')}</div><div id="tabCt"></div>`;
+  document.getElementById('mnCt').innerHTML=h;
+  ({info:tInfo,eval:tEval,evid:tEvid,rev:tRev,vis:tVis,rep:tRep}[R.tab]||tEval)(s)}
+
+function tInfo(s){const mo=`<option value="">بدون نموذج تقييم</option>`+Object.entries(MODELS).map(([k,m])=>`<option value="${k}"${s.model===k?' selected':''}>${m.name}</option>`).join('');
+  document.getElementById('tabCt').innerHTML=`<div class="card"><div class="card-t">🪪 البيانات الأساسية</div><div class="grid2">
+   <div class="fg"><label>الاسم</label><input class="fi" value="${esc(s.name)}" onchange="setF(${s.id},'name',this.value.trim()||'بدون اسم',1)"></div>
+   <div class="fg"><label>المسمى الوظيفي</label><select class="fs" onchange="setJob(${s.id},this.value)">${jobOpts(s.job)}</select></div>
+   <div class="fg"><label>التخصص</label><input class="fi" list="specL2" value="${esc(s.spec)}" onchange="setF(${s.id},'spec',this.value.trim(),1)"><datalist id="specL2">${SPECS.map(x=>`<option value="${x}">`).join('')}</datalist></div>
+   <div class="fg"><label>المادة / المواد</label><input class="fi" value="${esc(s.subject)}" onchange="setF(${s.id},'subject',this.value.trim(),1)"></div>
+   <div class="fg"><label>الصفوف المسندة</label><input class="fi" value="${esc(s.classes)}" onchange="setF(${s.id},'classes',this.value.trim())"></div>
+   <div class="fg"><label>نموذج التقييم</label><select class="fs" onchange="setF(${s.id},'model',this.value,1)">${mo}</select></div>
+  </div><p class="hint" style="margin-top:8px">يُحدَّد نموذج التقييم تلقائيًا حسب المسمى الوظيفي، ويمكن تغييره. عند تغيير النموذج تُحفظ التقديرات السابقة للعناصر المشتركة (مثل العناصر الثلاثة العامة).</p>
+  <div style="margin-top:14px;border-top:1px solid var(--bd);padding-top:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><span class="hint">آخر تحديث: ${new Date(s.updated).toLocaleString('ar-SA-u-ca-islamic-umalqura',{dateStyle:'medium',timeStyle:'short'})}</span><button class="mb mb-ro" onclick="delS(${s.id})">🗑️ حذف المنسوبة</button></div></div>`}
+function setF(id,k,v,re){const s=byId(id);if(!s)return;s[k]=v;touch(s);if(re)renderAll()}
+function setJob(id,j){const s=byId(id);if(!s)return;const old=jobM(s.job);s.job=j;if(!s.model||s.model===old)s.model=jobM(j);touch(s);renderAll()}
+
+function tEval(s){const m=MODELS[s.model],ct=document.getElementById('tabCt');
+  if(!m){noModel(s);return}
+  const E=evCalc(s);let h=`<div class="card"><div class="card-t">📊 ${esc(m.name)} — سلم التقدير (1–5)<span class="sp-r hint">اضغطي الرقم مرة أخرى لإلغائه</span></div><div class="el-g">`;
+  m.items.forEach((it,i)=>{const v=s.ratings[it.id]||null;
+    h+=`<div class="el-i${v?' done':''}"><div class="el-tp"><span class="el-nm"><b>${i+1}</b>${esc(it.n)}</span><span class="el-wt">${it.w}%</span></div><div class="el-ev" onclick="go('p/${s.id}/evid')">📎 الشواهد: ${E.per[it.id].y}/${E.per[it.id].tot-E.per[it.id].na}</div><div class="el-bt">${[1,2,3,4,5].map(n=>`<button class="rb${v===n?' on '+rCls(n):''}" onclick="setR(${s.id},'${it.id}',${n})">${n}</button>`).join('')}<span class="el-lb">${v?`<b style="color:${sCol(v)}">${RL[v]}</b>موزون: ${(v*it.w/100).toFixed(2)}`:'لم يُقدَّر'}</span></div></div>`});
+  h+=`</div></div>`;
+  h+=`<div class="grid2" style="margin-bottom:20px"><div class="card" style="margin-bottom:0"><div class="bx-t">🎓 الدورات التدريبية</div><div class="ct-row"><span class="ct-lb">عدد الدورات</span><div class="ct-ctr"><button class="ct-b" onclick="chN(${s.id},'courses',-1)">−</button><input type="number" class="ct-in" value="${+s.courses||0}" min="0" onchange="setN(${s.id},'courses',this.value)"><button class="ct-b" onclick="chN(${s.id},'courses',1)">+</button></div></div></div>
+   <div class="card" style="margin-bottom:0"><div class="bx-t">👁️ الزيارات الصفية</div><div class="ct-row"><span class="ct-lb">الزيارات المنفذة: <b style="color:var(--tp);font-family:Cairo">${vsCount(s)}</b> من 3${+s.legacyVisits&&!vsCount(s)?' (مسجّل سابقًا: '+s.legacyVisits+')':''}</span><button class="mb mb-cy" onclick="go('p/${s.id}/vis')">فتح الزيارات</button></div></div></div>`;
+  h+=`<div class="grid2" style="margin-bottom:20px"><div class="card" style="margin-bottom:0"><div class="bx-t" style="color:var(--em)">💪 نقاط القوة</div><textarea class="na" placeholder="نقاط القوة..." oninput="setF(${s.id},'strengths',this.value)">${esc(s.strengths)}</textarea></div>
+   <div class="card" style="margin-bottom:0"><div class="bx-t" style="color:var(--ro)">⚠️ نقاط الضعف</div><textarea class="na" placeholder="نقاط الضعف..." oninput="setF(${s.id},'weaknesses',this.value)">${esc(s.weaknesses)}</textarea></div></div>
+  <div class="card"><div class="bx-t">📝 ملاحظات وتوصيات</div><textarea class="na" placeholder="ملاحظات أو توصيات..." oninput="setF(${s.id},'notes',this.value)">${esc(s.notes)}</textarea></div>`;
+  ct.innerHTML=h}
+function setR(id,it,v){const s=byId(id);if(!s)return;if(s.ratings[it]===v)delete s.ratings[it];else s.ratings[it]=v;touch(s);
+  const y=window.scrollY;renderAll();window.scrollTo(0,y)}
+function chN(id,k,d){const s=byId(id);if(!s)return;s[k]=Math.max(0,(+s[k]||0)+d);touch(s);const y=window.scrollY;renderAll();window.scrollTo(0,y)}
+function setN(id,k,v){const s=byId(id);if(!s)return;s[k]=Math.max(0,parseInt(v)||0);touch(s);renderList()}
+
+/* ═══════════ الطباعة ═══════════ */
+function prHead(){const S=D.school;
+  return`<div class="pr"><div class="pr-hd"><div class="r">المملكة العربية السعودية<br>وزارة التعليم<br>${esc(S.edu)||'<span style="color:#aaa">إدارة التعليم</span>'}<br>${esc(S.office)}</div>
+  <div class="c">${S.logo?`<img src="${S.logo}" alt="">`:`<div class="moe">وزارة التعليم</div><div style="font-size:8px;color:#64748b">Ministry of Education</div>`}</div>
+  <div class="l">العام الدراسي: ${esc(S.year)}<br>${S.stage?'المرحلة: '+esc(S.stage):''}</div></div>
+  <div class="pr-sch">${esc(S.name)||'<span style="color:#aaa">اسم المدرسة</span>'}</div></div>`}
+function prFoot(){const S=D.school;return`<div class="pr-ft"><span>${esc(S.edu)}${S.name?' — '+esc(S.name):''}</span><span>إعداد: دانية العلويط</span><span>العام الدراسي ${esc(S.year)}</span></div>`}
+function evalHTML(s){const m=MODELS[s.model],c=calc(s),S=D.school;let tw=0;
+  let rows=m.items.map((it,i)=>{const v=s.ratings[it.id];const wv=v?v*it.w/100:null;if(wv)tw+=wv;
+    return`<tr><td>${i+1}</td><td class="r">${esc(it.n)}</td><td>${it.w}%</td><td>${v||'—'}</td><td>${v?RL[v]:'—'}</td><td>${wv!=null?wv.toFixed(2):'—'}</td></tr>`}).join('');
+  return prHead()+`<div class="pr"><div class="pr-ttl"><span>تقرير تقييم الأداء الوظيفي</span></div>
+  <div class="pr-bar">أولًا: بيانات شاغلة الوظيفة</div>
+  <table class="pr-t"><tr><td class="k">الاسم</td><td class="r">${esc(s.name)}</td><td class="k">المسمى الوظيفي</td><td class="r">${esc(jobN(s.job))}</td></tr>
+  <tr><td class="k">التخصص</td><td class="r">${esc(s.spec)||'—'}</td><td class="k">المادة</td><td class="r">${esc(s.subject)||'—'}</td></tr>
+  <tr><td class="k">نموذج التقييم</td><td class="r" colspan="3">${esc(m.name)}</td></tr></table>
+  <div class="pr-bar">ثانيًا: عناصر التقييم</div>
+  <table class="pr-t"><thead><tr><th style="width:5%">م</th><th>عنصر التقييم</th><th style="width:9%">الوزن</th><th style="width:9%">التقدير</th><th style="width:16%">الوصف</th><th style="width:15%">التقدير الموزون</th></tr></thead><tbody>${rows}
+  <tr class="tot"><td colspan="5" class="r">${c.complete?'إجمالي التقدير الموزون':'إجمالي التقدير الموزون (للعناصر المقدّرة: '+c.f+' من '+c.n+')'}</td><td>${c.score!=null?c.score.toFixed(2):'—'}</td></tr>
+  <tr class="tot"><td colspan="5" class="r">التقدير العام للأداء</td><td>${c.final?c.final+' — '+RL[c.final]:'لم يكتمل'}</td></tr></tbody></table>
+  <table class="pr-t" style="margin-top:6px"><tr><td class="k">الدورات التدريبية</td><td>${+s.courses||0}</td><td class="k">الزيارات الصفية</td><td>${vsCount(s)||+s.legacyVisits||0}</td></tr></table>
+  <div class="pr-bar">ثالثًا: نقاط القوة</div><div class="pr-txt">${esc(s.strengths)||'—'}</div>
+  <div class="pr-bar">رابعًا: نقاط الضعف / مجالات التطوير</div><div class="pr-txt">${esc(s.weaknesses)||'—'}</div>
+  <div class="pr-bar">خامسًا: ملاحظات وتوصيات</div><div class="pr-txt">${esc(s.notes)||'—'}</div>
+  <div class="pr-sigs"><div class="pr-sig"><b>شاغلة الوظيفة</b>الاسم: ${esc(s.name)}<br>التوقيع: ....................</div>
+   <div class="pr-sig"><b>المشرفة التربوية</b>الاسم: ....................<br>التوقيع: ....................</div>
+   <div class="pr-sig"><b>مديرة المدرسة</b>الاسم: ${esc(S.principal)||'....................'}<br>التوقيع: ....................</div></div>
+  <div style="font-size:10px;margin-top:8px">التاريخ: ....../....../ ${esc(S.year)}</div>${prFoot()}</div>`}
+function evidHTML(s){const m=MODELS[s.model],E=evCalc(s),S=D.school;
+  const stc={y:'<b style="color:#047857">✓ متوفر</b>',n:'<b style="color:#b91c1c">✗ غير متوفر</b>',na:'<span style="color:#64748b">لا ينطبق</span>'};
+  let rows='';m.items.forEach((it,i)=>{const L=evList(it.id),p=E.per[it.id];
+    L.forEach((e,j)=>{const r=s.evidence[e.id]||{};
+      rows+=`<tr>${j===0?`<td rowspan="${L.length}">${i+1}</td><td rowspan="${L.length}" class="r"><b>${esc(it.n)}</b></td>`:''}<td class="r">${esc(e.n)}</td><td>${stc[r.st]||'<span style="color:#94a3b8">لم يُحدَّد</span>'}</td><td class="r">${esc(r.note||'')}${r.link?`${r.note?'<br>':''}<a href="${esc(r.link)}" style="color:#0369a1">🔗 الرابط</a>`:''}</td>${j===0?`<td rowspan="${L.length}"><b>${p.pct==null?'—':p.pct+'%'}</b><br><span style="font-size:9px">${p.y}/${p.tot-p.na}</span></td>`:''}</tr>`})});
+  return prHead()+`<div class="pr"><div class="pr-ttl"><span>تقرير توفر الشواهد</span></div>
+  <table class="pr-t">${s.portfolio?`<tr><td class="k">رابط ملف المعلمة</td><td class="r" colspan="3" dir="ltr" style="text-align:right"><a href="${esc(s.portfolio)}" style="color:#0369a1;word-break:break-all">${esc(s.portfolio)}</a></td></tr>`:''}<tr><td class="k">الاسم</td><td class="r">${esc(s.name)}</td><td class="k">المسمى الوظيفي</td><td class="r">${esc(jobN(s.job))}</td></tr>
+  <tr><td class="k">التخصص / المادة</td><td class="r">${esc(s.spec)||'—'}${s.subject?' / '+esc(s.subject):''}</td><td class="k">نموذج التقييم</td><td class="r">${esc(m.name)}</td></tr></table>
+  <div class="pr-bar">ملخص توفر الشواهد</div>
+  <table class="pr-t"><thead><tr><th>عدد الشواهد</th><th>لا ينطبق</th><th>المطلوبة</th><th>المتوفرة</th><th>غير المتوفرة</th><th>لم تُحدَّد</th><th>نسبة توفر الشواهد</th></tr></thead>
+  <tbody><tr class="tot"><td>${E.tot}</td><td>${E.na}</td><td>${E.tot-E.na}</td><td>${E.y}</td><td>${E.n}</td><td>${E.u}</td><td>${E.pct==null?'—':E.pct+'%'}</td></tr></tbody></table>
+  <div style="font-size:9px;color:#64748b;margin-top:2px">نسبة توفر الشواهد = المتوفرة ÷ المطلوبة. الشاهد الذي لم تُحدَّد حالته يُحسب غير متوفر.</div>
+  <div class="pr-bar">تفصيل الشواهد حسب عناصر التقييم</div>
+  <table class="pr-t pr-ev"><thead><tr><th style="width:4%">م</th><th style="width:20%">عنصر التقييم</th><th>الشاهد</th><th style="width:12%">الحالة</th><th style="width:18%">ملاحظة / رابط</th><th style="width:8%">نسبة العنصر</th></tr></thead><tbody>${rows}</tbody></table>
+  <div class="pr-sigs" style="grid-template-columns:repeat(2,1fr)"><div class="pr-sig"><b>شاغلة الوظيفة</b>الاسم: ${esc(s.name)}<br>التوقيع: ....................</div>
+   <div class="pr-sig"><b>مديرة المدرسة</b>الاسم: ${esc(S.principal)||'....................'}<br>التوقيع: ....................</div></div>
+  <div style="font-size:10px;margin-top:8px">التاريخ: ....../....../ ${esc(S.year)}</div>${prFoot()}</div>`}
+function evListHTML(k){const m=MODELS[k];let rows='';
+  m.items.forEach((it,i)=>{const L=evList(it.id);L.forEach((e,j)=>{rows+=`<tr>${j===0?`<td rowspan="${L.length}">${i+1}</td><td rowspan="${L.length}" class="r"><b>${esc(it.n)}</b></td><td rowspan="${L.length}">${it.w}%</td>`:''}<td>${j+1}</td><td class="r">${esc(e.n)}</td></tr>`})});
+  return prHead()+`<div class="pr"><div class="pr-ttl"><span>قائمة الشواهد — ${esc(m.name)}</span></div>
+  <div style="font-size:10px;margin-bottom:6px">الشواهد مستنتجة من سلالم التقدير لقياس مستوى الإتقان لعناصر التقييم — الدليل الإرشادي لإدارة الأداء الوظيفي لشاغلي الوظائف التعليمية (الإصدار الثاني).</div>
+  <table class="pr-t pr-ev"><thead><tr><th style="width:4%">م</th><th style="width:30%">عنصر التقييم</th><th style="width:7%">الوزن</th><th style="width:4%">#</th><th>الشاهد</th></tr></thead><tbody>${rows}</tbody></table>${prFoot()}</div>`}
+function printDoc(html){document.getElementById('printArea').innerHTML=html;setTimeout(()=>window.print(),60)}
+function prevDoc(html,title){const w=window.open('','_blank');if(!w){toast('⚠️ اسمحي بالنوافذ المنبثقة للمعاينة','err');return}
+  const css=[...document.querySelectorAll('style')].map(x=>x.outerHTML).join('');
+  w.document.write(`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>${esc(title||'معاينة')}</title><link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Cairo:wght@700;800&display=swap" rel="stylesheet">${css}<style>body{background:#e5e7eb!important;color:#111}#pg{background:#fff;width:210mm;min-height:297mm;margin:20px auto;padding:11mm 12mm;box-shadow:0 2px 12px rgba(0,0,0,.15)}.pb{position:fixed;top:12px;left:12px;padding:8px 16px;background:#0ea5e9;color:#fff;border:none;border-radius:8px;font-family:Tajawal;cursor:pointer}@media print{.pb{display:none}#pg{margin:0;box-shadow:none;padding:0;width:auto;min-height:0}body{background:#fff!important}}</style></head><body><button class="pb" onclick="print()">🖨️ طباعة / PDF</button><div id="pg">${html}</div></body></html>`);w.document.close()}
+function printEval(id){const s=byId(id);if(s&&MODELS[s.model])printDoc(evalHTML(s))}
+function prevEval(id){const s=byId(id);if(s&&MODELS[s.model])prevDoc(evalHTML(s),'تقرير تقييم الأداء — '+s.name)}
+function printEvid(id){const s=byId(id);if(s&&MODELS[s.model])printDoc(evidHTML(s))}
+function prevEvid(id){const s=byId(id);if(s&&MODELS[s.model])prevDoc(evidHTML(s),'تقرير توفر الشواهد — '+s.name)}
+
+/* ═══════════ أدوات مشتركة ═══════════ */
+function hijriNow(){try{return new Date().toLocaleDateString('ar-SA-u-ca-islamic-umalqura',{year:'numeric',month:'2-digit',day:'2-digit'})}catch(e){return new Date().toLocaleDateString()}}
+function nl(t){return esc(t||'').replace(/\n/g,'<br>')}
+function evSnap(s,map){const m=MODELS[s.model];if(!m||!map)return null;const r={tot:0,y:0,n:0,na:0,u:0,pct:null,per:{}};
+  m.items.forEach(it=>{const p={tot:0,y:0,n:0,na:0,u:0};evList(it.id).forEach(e=>{const st=map[e.id];p.tot++;if(st==='y')p.y++;else if(st==='n')p.n++;else if(st==='na')p.na++;else p.u++});
+    const d=p.tot-p.na;p.pct=d?Math.round(p.y/d*100):null;r.per[it.id]=p;['tot','y','n','na','u'].forEach(k=>r[k]+=p[k])});
+  const d=r.tot-r.na;r.pct=d?Math.round(r.y/d*100):null;return r}
+function evMissing(s,map){const m=MODELS[s.model],L=[];if(!m||!map)return L;
+  m.items.forEach(it=>evList(it.id).forEach(e=>{const st=map[e.id];if(st!=='y'&&st!=='na')L.push({eid:e.id,el:it.n,n:e.n})}));return L}
+function curEvMap(s){const o={};Object.entries(s.evidence||{}).forEach(([k,v])=>{if(v&&v.st)o[k]=v.st});return o}
+function sTop(v){return v?[v.subject,v.topic].filter(Boolean).map(esc).join(' / '):''}
+function seg(labels,cur,fn){return`<div class="seg">${labels.map((l,i)=>`<button class="${cur===i?'on':''}" onclick="${fn}(${i})">${l}</button>`).join('')}</div>`}
+function sigBlock(cells){return`<div class="pr-sigs" style="grid-template-columns:repeat(${cells.length},1fr)">${cells.map(([t,n])=>`<div class="pr-sig"><b>${t}</b>الاسم: ${n?esc(n):'....................'}<br>التوقيع: ....................</div>`).join('')}</div>`}
+function infoTable(s,extra){const m=MODELS[s.model];return`<table class="pr-t"><tr><td class="k">الاسم</td><td class="r">${esc(s.name)}</td><td class="k">المسمى الوظيفي</td><td class="r">${esc(jobN(s.job))}</td></tr>
+  <tr><td class="k">التخصص / المادة</td><td class="r">${esc(s.spec)||'—'}${s.subject?' / '+esc(s.subject):''}</td><td class="k">نموذج التقييم</td><td class="r">${m?esc(m.name):'—'}</td></tr>${extra||''}</table>`}
+
+/* ═══════════ المراجعة النصف سنوية ═══════════ */
+const RVN=['المراجعة الأولى','المراجعة الثانية'];
+let rvI=0;
+function rvGet(s,i){s.reviews=s.reviews||[];if(!s.reviews[i])s.reviews[i]={date:'',period:'',rv:{},rt:{},ev:null,evAt:'',str:'',imp:'',need:'',rec:'',pnote:''};return s.reviews[i]}
+function rvHas(r){return!!(r&&(r.date||Object.keys(r.rv||{}).length||Object.keys(r.rt||{}).length||r.ev||r.str||r.imp||r.need||r.rec||r.pnote))}
+function rvDone(s){return[0,1].map(i=>rvHas((s.reviews||[])[i]))}
+function rvSel(i){rvI=i;keepY(renderAll)}
+function tRev(s){const m=MODELS[s.model];if(!m){noModel(s);return}const ct=document.getElementById('tabCt'),d=rvDone(s);
+  let h=seg([RVN[0]+(d[0]?' ✓':''),RVN[1]+(d[1]?' ✓':''),'⇄ المقارنة بين المراجعتين'],rvI,'rvSel');
+  if(rvI===2){h+=rvCmpUI(s);ct.innerHTML=h;return}
+  const i=rvI,r=rvGet(s,i),E=evSnap(s,r.ev);
+  h+=`<div class="card"><div class="card-t">🗓️ ${RVN[i]}<span class="sp-r"><button class="mb mb-cy" onclick="prevDoc(revHTML(byId(${s.id}),${i}),'تقرير المراجعة النصف سنوية للأداء')">👁️ معاينة التقرير</button><button class="mb mb-am" onclick="printDoc(revHTML(byId(${s.id}),${i}))">🖨️ طباعة</button></span></div><div class="grid2">
+   <div class="fg"><label>تاريخ المراجعة</label><input class="fi" value="${esc(r.date)}" placeholder="مثال: ١٤٤٨/٠٥/١٠ هـ" onchange="setRv(${s.id},${i},'date',this.value)"></div>
+   <div class="fg"><label>الفترة</label><input class="fi" value="${esc(r.period)}" placeholder="مثال: الفصل الدراسي الأول" onchange="setRv(${s.id},${i},'period',this.value)"></div></div></div>`;
+  h+=`<div class="card"><div class="card-t">📊 البنود التي تمت مراجعتها<span class="sp-r"><button class="mb" onclick="rvCopy(${s.id},${i})">⇩ نسخ التقديرات الحالية</button></span></div><p class="hint" style="margin-bottom:8px">تُحفظ تقديرات كل مراجعة مستقلة عن التقييم النهائي وعن المراجعة الأخرى، لتكون المقارنة بينهما حقيقية.</p>
+   <div class="tbl-w"><table class="tbl"><thead><tr><th>م</th><th class="r">عنصر التقييم</th><th>تمت مراجعته</th><th>التقدير في المراجعة</th><th>توفر الشواهد</th></tr></thead><tbody>`;
+  m.items.forEach((it,k)=>{const v=r.rt[it.id],p=E?E.per[it.id]:null;
+    h+=`<tr><td>${k+1}</td><td class="r" style="color:var(--tp)">${esc(it.n)}</td><td><input type="checkbox" class="ck" ${r.rv[it.id]?'checked':''} onchange="rvMark(${s.id},${i},'${it.id}',this.checked)"></td><td style="white-space:nowrap">${[1,2,3,4,5].map(n=>`<button class="rb sm${v===n?' on '+rCls(n):''}" onclick="rvRate(${s.id},${i},'${it.id}',${n})">${n}</button>`).join('')}</td><td style="font-family:Cairo;font-weight:700;color:${pCol(p&&p.pct)}">${p&&p.pct!=null?p.pct+'%':'—'}</td></tr>`});
+  h+=`</tbody></table></div></div>`;
+  h+=`<div class="card"><div class="card-t">📎 حالة الشواهد في هذه المراجعة<span class="sp-r"><button class="mb mb-em" onclick="rvSnap(${s.id},${i})">📸 تسجيل حالة الشواهد الآن</button></span></div>`;
+  if(!E)h+=`<p class="hint">لم تُسجَّل حالة الشواهد لهذه المراجعة. حدّثي تبويب «الشواهد» ثم اضغطي «تسجيل حالة الشواهد الآن» لحفظ صورة منها بتاريخ المراجعة.</p>`;
+  else{const miss=evMissing(s,r.ev);
+    h+=`<p class="hint" style="margin-bottom:8px">سُجّلت بتاريخ: ${esc(r.evAt)}</p><div class="ov-stats" style="margin-bottom:10px"><div class="ov-s"><div class="ov-s-lb">الشواهد المتوفرة</div><div class="ov-s-v" style="color:var(--em)">${E.y}</div></div><div class="ov-s"><div class="ov-s-lb">الشواهد غير المتوفرة</div><div class="ov-s-v" style="color:var(--ro)">${E.n+E.u}</div></div><div class="ov-s"><div class="ov-s-lb">نسبة اكتمال الشواهد</div><div class="ov-s-v" style="color:${pCol(E.pct)}">${E.pct==null?'—':E.pct+'%'}</div></div></div>
+    ${miss.length?`<details><summary class="hint" style="cursor:pointer">عرض الشواهد غير المتوفرة (${miss.length})</summary><ul class="miss">${miss.map(x=>`<li><b>${esc(x.el)}:</b> ${esc(x.n)}</li>`).join('')}</ul></details>`:''}`}
+  h+=`</div>`;
+  const T=[['str','💪 جوانب القوة'],['imp','⚠️ جوانب تحتاج تحسين'],['need','🎓 الاحتياجات المهنية'],['rec','📌 التوصيات'],['pnote','📝 ملاحظات المديرة']];
+  h+=`<div class="grid2">${T.map(([k,l])=>`<div class="card" style="margin-bottom:14px"><div class="bx-t">${l}</div><textarea class="na" oninput="setRv(${s.id},${i},'${k}',this.value)">${esc(r[k])}</textarea></div>`).join('')}</div>`;
+  ct.innerHTML=h}
+function setRv(id,i,k,v){const s=byId(id);if(!s)return;rvGet(s,i)[k]=v;touch(s)}
+function rvMark(id,i,el,on){const s=byId(id);if(!s)return;const r=rvGet(s,i);if(on)r.rv[el]=true;else delete r.rv[el];touch(s)}
+function rvRate(id,i,el,n){const s=byId(id);if(!s)return;const r=rvGet(s,i);if(r.rt[el]===n)delete r.rt[el];else{r.rt[el]=n;r.rv[el]=true}touch(s);keepY(renderAll)}
+function rvCopy(id,i){const s=byId(id);if(!s)return;const r=rvGet(s,i);if(Object.keys(r.rt).length&&!confirm('استبدال تقديرات هذه المراجعة بالتقديرات الحالية؟'))return;
+  r.rt={};Object.entries(s.ratings).forEach(([k,v])=>{r.rt[k]=v;r.rv[k]=true});touch(s);keepY(renderAll);toast('✅ تم النسخ','ok')}
+function rvSnap(id,i){const s=byId(id);if(!s)return;const r=rvGet(s,i);if(r.ev&&!confirm('استبدال حالة الشواهد المسجلة سابقًا لهذه المراجعة؟'))return;
+  r.ev=curEvMap(s);r.evAt=hijriNow();touch(s);keepY(renderAll);toast('📸 تم تسجيل حالة الشواهد','ok')}
+function rvCmp(s){const m=MODELS[s.model],a=(s.reviews||[])[0],b=(s.reviews||[])[1];if(!m||!rvHas(a)||!rvHas(b))return null;
+  const Ea=evSnap(s,a.ev),Eb=evSnap(s,b.ev),rows=[],up=[],down=[];
+  m.items.forEach(it=>{const x=a.rt[it.id],y=b.rt[it.id],d=x&&y?y-x:null;rows.push({it,x,y,d,pa:Ea?Ea.per[it.id].pct:null,pb:Eb?Eb.per[it.id].pct:null});if(d>0)up.push(it.n);if(d<0)down.push(it.n)});
+  const done=[],still=[];if(a.ev&&b.ev){const ma=new Set(evMissing(s,a.ev).map(x=>x.eid));evMissing(s,b.ev).forEach(x=>still.push(x));
+    m.items.forEach(it=>evList(it.id).forEach(e=>{if(ma.has(e.id)&&b.ev[e.id]==='y')done.push({el:it.n,n:e.n})}))}
+  return{a,b,Ea,Eb,rows,up,down,done,still}}
+function dTxt(d){return d==null?'—':d>0?'<b style="color:#059669">▲ +'+d+'</b>':d<0?'<b style="color:#dc2626">▼ '+d+'</b>':'='}
+function rvCmpUI(s){const C=rvCmp(s);if(!C)return`<div class="card soon-box"><div class="em">⇄</div><h3>تحتاج المقارنة إلى تعبئة المراجعتين</h3><p class="hint">أكملي المراجعة الأولى والثانية ثم عودي إلى هنا.</p></div>`;
+  let h=`<div class="card"><div class="card-t">⇄ المقارنة بين المراجعتين<span class="sp-r"><button class="mb mb-am" onclick="printDoc(revHTML(byId(${s.id}),1))">🖨️ طباعة تقرير المراجعة الثانية مع المقارنة</button></span></div><div class="tbl-w"><table class="tbl"><thead><tr><th class="r">عنصر التقييم</th><th>المراجعة الأولى</th><th>المراجعة الثانية</th><th>التغير</th><th>الشواهد (١)</th><th>الشواهد (٢)</th></tr></thead><tbody>`;
+  C.rows.forEach(r=>{h+=`<tr><td class="r" style="color:var(--tp)">${esc(r.it.n)}</td><td>${r.x||'—'}</td><td>${r.y||'—'}</td><td>${dTxt(r.d)}</td><td>${r.pa==null?'—':r.pa+'%'}</td><td>${r.pb==null?'—':r.pb+'%'}</td></tr>`});
+  h+=`<tr><td class="r"><b>نسبة اكتمال الشواهد</b></td><td></td><td></td><td></td><td><b>${C.Ea&&C.Ea.pct!=null?C.Ea.pct+'%':'—'}</b></td><td><b>${C.Eb&&C.Eb.pct!=null?C.Eb.pct+'%':'—'}</b></td></tr></tbody></table></div></div>
+  <div class="grid2"><div class="card"><div class="bx-t" style="color:var(--em)">▲ عناصر تحسّنت (${C.up.length})</div>${C.up.length?`<ul class="miss">${C.up.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="hint">—</p>'}${C.down.length?`<div class="bx-t" style="color:var(--ro);margin-top:10px">▼ عناصر انخفضت (${C.down.length})</div><ul class="miss">${C.down.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}</div>
+  <div class="card"><div class="bx-t" style="color:var(--cy)">✓ شواهد استُكملت (${C.done.length})</div>${C.done.length?`<ul class="miss">${C.done.map(x=>`<li><b>${esc(x.el)}:</b> ${esc(x.n)}</li>`).join('')}</ul>`:'<p class="hint">'+(C.a.ev&&C.b.ev?'—':'سجّلي حالة الشواهد في المراجعتين لعرضها.')+'</p>'}
+  ${C.still.length?`<details style="margin-top:10px"><summary class="bx-t" style="color:var(--am);cursor:pointer">شواهد ما زالت غير متوفرة (${C.still.length})</summary><ul class="miss">${C.still.map(x=>`<li><b>${esc(x.el)}:</b> ${esc(x.n)}</li>`).join('')}</ul></details>`:''}</div></div>`;
+  return h}
+function revHTML(s,i){const m=MODELS[s.model],r=rvGet(s,i),E=evSnap(s,r.ev),S=D.school;
+  const rows=m.items.map((it,k)=>{const v=r.rt[it.id],p=E?E.per[it.id]:null;return`<tr><td>${k+1}</td><td class="r">${esc(it.n)}</td><td>${it.w}%</td><td>${r.rv[it.id]?'✓':'—'}</td><td>${v||'—'}</td><td>${v?RL[v]:'—'}</td><td>${p&&p.pct!=null?p.pct+'%':'—'}</td></tr>`}).join('');
+  const miss=E?evMissing(s,r.ev):[];
+  let h=prHead()+`<div class="pr"><div class="pr-ttl"><span>تقرير المراجعة النصف سنوية للأداء</span></div>
+  ${infoTable(s,`<tr><td class="k">المراجعة</td><td class="r">${RVN[i]}</td><td class="k">تاريخ المراجعة</td><td class="r">${esc(r.date)||'....../....../ '+esc(S.year)}</td></tr><tr><td class="k">الفترة</td><td class="r" colspan="3">${esc(r.period)||'—'}</td></tr>`)}
+  <div class="pr-bar">أولًا: حالة بنود الأداء</div>
+  <table class="pr-t"><thead><tr><th style="width:5%">م</th><th>عنصر التقييم</th><th style="width:7%">الوزن</th><th style="width:9%">تمت مراجعته</th><th style="width:8%">التقدير</th><th style="width:15%">الوصف</th><th style="width:11%">توفر الشواهد</th></tr></thead><tbody>${rows}</tbody></table>
+  <div class="pr-bar">ثانيًا: حالة الشواهد</div>
+  ${E?`<table class="pr-t"><thead><tr><th>الشواهد المطلوبة</th><th>المتوفرة</th><th>غير المتوفرة</th><th>نسبة اكتمال الشواهد</th><th>تاريخ التسجيل</th></tr></thead><tbody><tr class="tot"><td>${E.tot-E.na}</td><td>${E.y}</td><td>${E.n+E.u}</td><td>${E.pct==null?'—':E.pct+'%'}</td><td>${esc(r.evAt)}</td></tr></tbody></table>
+  ${miss.length?(miss.length<=15?`<div class="pr-txt" style="font-size:9.5px"><b>الشواهد غير المتوفرة:</b> ${miss.map((x,j)=>`(${j+1}) ${esc(x.n)}`).join(' — ')}</div>`:`<div class="pr-txt" style="font-size:9.5px">عدد الشواهد غير المتوفرة ${miss.length} — نسبة كل عنصر في الجدول أعلاه، والتفصيل في «تقرير توفر الشواهد».</div>`):''}`:'<div class="pr-txt">لم تُسجَّل حالة الشواهد في هذه المراجعة.</div>'}
+  <div class="pr-bar">ثالثًا: جوانب التميز</div><div class="pr-txt">${nl(r.str)||'—'}</div>
+  <div class="pr-bar">رابعًا: جوانب التحسين</div><div class="pr-txt">${nl(r.imp)||'—'}</div>
+  <div class="pr-bar">خامسًا: الاحتياجات المهنية</div><div class="pr-txt">${nl(r.need)||'—'}</div>
+  <div class="pr-bar">سادسًا: التوصيات</div><div class="pr-txt">${nl(r.rec)||'—'}</div>
+  <div class="pr-bar">سابعًا: ملاحظات المديرة</div><div class="pr-txt">${nl(r.pnote)||'—'}</div>`;
+  const C=i===1?rvCmp(s):null;
+  if(C)h+=`<div class="pr-bar">ثامنًا: المقارنة بالمراجعة الأولى</div><table class="pr-t"><thead><tr><th>عنصر التقييم</th><th style="width:11%">المراجعة الأولى</th><th style="width:11%">المراجعة الثانية</th><th style="width:9%">التغير</th></tr></thead><tbody>${C.rows.map(x=>`<tr><td class="r">${esc(x.it.n)}</td><td>${x.x||'—'}</td><td>${x.y||'—'}</td><td>${dTxt(x.d)}</td></tr>`).join('')}<tr class="tot"><td class="r">نسبة اكتمال الشواهد</td><td>${C.Ea&&C.Ea.pct!=null?C.Ea.pct+'%':'—'}</td><td>${C.Eb&&C.Eb.pct!=null?C.Eb.pct+'%':'—'}</td><td></td></tr></tbody></table>
+  ${C.done.length?`<div class="pr-txt" style="font-size:9.5px"><b>شواهد استُكملت:</b> ${C.done.map(x=>esc(x.n)).join(' — ')}</div>`:''}`;
+  h+=sigBlock([['المعلمة',s.name],['المديرة / المقيّمة',S.principal]])+`<div style="font-size:10px;margin-top:8px">التاريخ: ${esc(r.date)||'....../....../ '+esc(S.year)}</div>${prFoot()}</div>`;
+  return h}
+
+/* ═══════════ الزيارات الصفية — استمارة دعم وتطوير الهيئة التعليمية (نموذج ٥٠) ═══════════
+   العناصر والأدوات منقولة بنصّها من الاستمارة المعتمدة في المدرسة. */
+const VDOM=[['التخطيط للتدريس',['تخطيط المعلم للدرس بمنهجية علمية واضحة']],
+ ['استراتيجيات التدريس',['يستخدم استراتيجيات التعلم النشط','يربط بين أهداف المادة والمواد الأخرى','يلتزم استخدام اللغة العربية في التحدث مع الطلاب']],
+ ['إدارة الصف',['يضبط الصف ويديره بكفاءة تدعم تحقيق الأهداف','يدير وقت التعلم بكفاءة عالية','يلتزم بالمهنية وأخلاقيات المهنة وقيمها']],
+ ['دعم المتعلمين',['ينظم الصف بما يتناسب مع الاستراتيجيات','يعزز ما لدى الطلاب من خبرات سابقة','يشجع الطلاب على التعبير عن حاجاتهم وأرائهم','يدعم توظيف ما تعلمه الطلاب في الدرس في الحياة']],
+ ['التقويم الصفي',['يقدم الدعم اللازم للمتعلمين والمتأخرين دراسياً','ينفذ التقويم الصفّي وفق تحليل النتائج السابقة','يستخدم سجل المتابعة كتحفيز للطلاب','يسأل أسئلة مثيرة لعمليات التفكير العليا','ينفذ تقويماً ختامياً للدرس واستخدام أدوات متنوعة']]];
+const VEL=[];VDOM.forEach(([d,L],di)=>L.forEach(n=>VEL.push({id:'e'+(VEL.length+1),n,d:di})));
+const VTOOLS=['يستخدم ويتابع كتاب الطالب','يستخدم ويتابع تطبيق كتاب النشاط','ينفذ تطبيقات وواجبات إضافية ويصححها','يوظف كتاب دليل المعلم','يستخدم مصادر التعلم بكفاءة','يوظف المعامل والمختبرات','يستخدم التقنية الحديثة (المنصة / العروض)','يشجع الطلاب على الاستزادة من المعرفة','يحث الطلاب على الإفادة من مصادر التعلم','يشارك بفعالية في الأنشطة المدرسية'];
+const LV={m:'مميز',a:'متوسط',w:'ضعيف'},LVS={m:3,a:2,w:1},TL={on:'مفعل',part:'مفعل إلى حد ما',off:'غير مفعل'};
+const VN=['الزيارة الأولى','الزيارة الثانية','الزيارة الثالثة'],VZ=['ز١','ز٢','ز٣'];
+const DAYS=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس'];
+const VIS_MODELS=['teacher','activity','health','kg'];
+let vsI=0;
+function vsGet(s,i){s.visits=s.visits||[];if(!s.visits[i])s.visits[i]={day:'',date:'',cls:'',subject:s.subject||'',topic:'',lv:{},ex:{},need:{},note:{},tl:{},why:{},tn:{},support:'',sup:D.school.principal||'',supJob:'مديرة المدرسة'};return s.visits[i]}
+function vsDone(v){return!!(v&&(v.date||Object.keys(v.lv||{}).length))}
+function vsCount(s){return(s.visits||[]).filter(vsDone).length}
+function vsSel(i){vsI=i;keepY(renderAll)}
+function tVis(s){const ct=document.getElementById('tabCt');
+  let h=seg(VN.map((l,i)=>l+(vsDone((s.visits||[])[i])?' ✓':'')).concat(['⇄ مقارنة الزيارات']),vsI,'vsSel');
+  h+=`<div class="note-box note-info" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>استمارة دعم وتطوير الهيئة التعليمية — نموذج رقم (٥٠). تُطبع الزيارات الثلاث في استمارة واحدة كما في النموذج الورقي.</span><span style="display:flex;gap:6px"><button class="mb mb-cy" onclick="prevDoc(visFormHTML(byId(${s.id})),'استمارة دعم وتطوير الهيئة التعليمية')">👁️ معاينة الاستمارة</button><button class="mb mb-am" onclick="printDoc(visFormHTML(byId(${s.id})))">🖨️ طباعة الاستمارة</button></span></div>`;
+  if(vsI===3){h+=vsCmpUI(s);ct.innerHTML=h;return}
+  const i=vsI,v=vsGet(s,i);
+  h+=`<div class="card"><div class="card-t">أولًا: معلومات عامة — ${VN[i]}</div><div class="grid3">
+   <div class="fg"><label>يوم الزيارة</label><select class="fs" onchange="setVs(${s.id},${i},'day',this.value)"><option value="">—</option>${DAYS.map(d=>`<option${v.day===d?' selected':''}>${d}</option>`).join('')}</select></div>
+   <div class="fg"><label>تاريخ الزيارة</label><input class="fi" value="${esc(v.date)}" placeholder="مثال: ١٤٤٨/٠٣/١٥ هـ" onchange="setVs(${s.id},${i},'date',this.value,1)"></div>
+   <div class="fg"><label>الشعبة / الصف</label><input class="fi" value="${esc(v.cls)}" onchange="setVs(${s.id},${i},'cls',this.value)"></div>
+   <div class="fg"><label>المادة</label><input class="fi" value="${esc(v.subject)}" onchange="setVs(${s.id},${i},'subject',this.value)"></div>
+   <div class="fg" style="grid-column:span 2"><label>موضوع الدرس</label><input class="fi" value="${esc(v.topic)}" onchange="setVs(${s.id},${i},'topic',this.value)"></div></div></div>`;
+  h+=`<div class="card"><div class="card-t">ثانيًا: عملية التعليم والتعلم<span class="sp-r hint">مستوى الأداء: مميز / متوسط / ضعيف</span></div>`;
+  VDOM.forEach(([dn],di)=>{h+=`<div class="vs-dom">${di+1}. ${dn}</div>`;
+    VEL.filter(e=>e.d===di).forEach(e=>{const cur=v.lv[e.id],prev=[0,1,2].filter(j=>j!==i&&s.visits&&s.visits[j]&&s.visits[j].lv[e.id]).map(j=>`<span class="vbadge l-${s.visits[j].lv[e.id]}">${VZ[j]}: ${LV[s.visits[j].lv[e.id]]}</span>`).join('');
+      const open=v.ex[e.id]||v.need[e.id]||v.note[e.id];
+      h+=`<div class="vs-row"><div class="ev-n">${esc(e.n)} ${prev}</div><div class="ev-bt">${Object.entries(LV).map(([k,l])=>`<button class="evb l-${k}${cur===k?' on':''}" onclick="setLv(${s.id},${i},'${e.id}','${k}')">${l}</button>`).join('')}</div></div>
+      <details class="vs-det"${open?' open':''}><summary>جوانب التميز · احتياجات التنمية المهنية (الاحتياج التدريبي) · ملحوظات</summary><div class="grid3">
+       <input class="fi" placeholder="جوانب التميز" value="${esc(v.ex[e.id]||'')}" onchange="setVsM(${s.id},${i},'ex','${e.id}',this.value)">
+       <input class="fi" placeholder="احتياجات التنمية المهنية (الاحتياج التدريبي)" value="${esc(v.need[e.id]||'')}" onchange="setVsM(${s.id},${i},'need','${e.id}',this.value)">
+       <input class="fi" placeholder="ملحوظات" value="${esc(v.note[e.id]||'')}" onchange="setVsM(${s.id},${i},'note','${e.id}',this.value)"></div></details>`})});
+  h+=`</div><div class="card"><div class="card-t">ثالثًا: الأدوات المساندة لعملية التعليم والتعلم</div>`;
+  VTOOLS.forEach((t,k)=>{const id='t'+(k+1),cur=v.tl[id];
+    h+=`<div class="vs-row vs-tool"><div class="ev-n">${k+1}. ${esc(t)}</div><div class="ev-bt">${Object.entries(TL).map(([x,l])=>`<button class="evb t-${x}${cur===x?' on':''}" onclick="setTl(${s.id},${i},'${id}','${x}')">${l}</button>`).join('')}</div>
+     <input class="fi ev-note" placeholder="الأسباب" value="${esc(v.why[id]||'')}" onchange="setVsM(${s.id},${i},'why','${id}',this.value)"><input class="fi ev-note" placeholder="ملحوظات" value="${esc(v.tn[id]||'')}" onchange="setVsM(${s.id},${i},'tn','${id}',this.value)"></div>`});
+  h+=`</div><div class="card"><div class="card-t">الدعم المقدم للمعلمة — ${VN[i]}</div><textarea class="na" placeholder="الدعم المقدم في هذه الزيارة..." oninput="setVs(${s.id},${i},'support',this.value)">${esc(v.support)}</textarea>
+   <div class="grid2" style="margin-top:10px"><div class="fg"><label>مقدمة الدعم</label><input class="fi" value="${esc(v.sup)}" onchange="setVs(${s.id},${i},'sup',this.value)"></div><div class="fg"><label>وظيفتها</label><input class="fi" value="${esc(v.supJob)}" onchange="setVs(${s.id},${i},'supJob',this.value)"></div></div></div>`;
+  ct.innerHTML=h}
+function setVs(id,i,k,v,re){const s=byId(id);if(!s)return;vsGet(s,i)[k]=v;touch(s);if(re)keepY(renderAll)}
+function setVsM(id,i,map,k,v){const s=byId(id);if(!s)return;const o=vsGet(s,i)[map];v=v.trim();if(v)o[k]=v;else delete o[k];touch(s)}
+function setLv(id,i,k,x){const s=byId(id);if(!s)return;const o=vsGet(s,i).lv;if(o[k]===x)delete o[k];else o[k]=x;touch(s);keepY(renderAll)}
+function setTl(id,i,k,x){const s=byId(id);if(!s)return;const o=vsGet(s,i).tl;if(o[k]===x)delete o[k];else o[k]=x;touch(s);keepY(renderAll)}
+
+function vsCmp(s){const V=[0,1,2].map(i=>(s.visits||[])[i]),done=V.map(vsDone);
+  const rows=VEL.map(e=>{const L=V.map(v=>v&&v.lv[e.id]||null),idx=L.map((x,i)=>x?i:-1).filter(i=>i>=0);
+    let trend=null;if(idx.length>=2){const a=LVS[L[idx[0]]],b=LVS[L[idx[idx.length-1]]];trend=b-a}
+    const last=idx.length?L[idx[idx.length-1]]:null;return{e,L,trend,last,needSupport:last==='a'||last==='w'}});
+  const needs={};VEL.forEach(e=>V.forEach((v,i)=>{const t=v&&v.need[e.id];if(t){(needs[e.id]=needs[e.id]||[]).push({i,t})}}));
+  const recurring=Object.entries(needs).filter(([k,a])=>a.length>=2).map(([k,a])=>({e:VEL.find(x=>x.id===k),a}));
+  const all=Object.entries(needs).flatMap(([k,a])=>a.map(x=>({e:VEL.find(y=>y.id===k),...x})));
+  const sum=V.map(v=>{const o={m:0,a:0,w:0};if(v)Object.values(v.lv).forEach(x=>o[x]++);return o});
+  const avg=V.map((v,i)=>{if(!v)return null;const L=Object.values(v.lv);return L.length?L.reduce((a,x)=>a+LVS[x],0)/L.length:null});
+  return{V,done,rows,improved:rows.filter(r=>r.trend>0),declined:rows.filter(r=>r.trend<0),support:rows.filter(r=>r.needSupport),recurring,all,sum,avg}}
+function trTxt(t){return t==null?'—':t>0?'<b style="color:#059669">▲ تحسّن</b>':t<0?'<b style="color:#dc2626">▼ انخفض</b>':'= ثابت'}
+function lvCell(x){return x?`<span class="lvt l-${x}">${LV[x]}</span>`:'—'}
+function vsCmpUI(s){const C=vsCmp(s);if(C.done.filter(Boolean).length<2)return`<div class="card soon-box"><div class="em">⇄</div><h3>تحتاج المقارنة إلى زيارتين على الأقل</h3><p class="hint">نفّذي زيارتين أو أكثر ثم عودي إلى هنا.</p></div>`;
+  let h=`<div class="card"><div class="card-t">⇄ مقارنة الزيارات الصفية<span class="sp-r"><button class="mb mb-cy" onclick="prevDoc(vsCmpHTML(byId(${s.id})),'تقرير مقارنة الزيارات')">👁️ معاينة التقرير</button><button class="mb mb-am" onclick="printDoc(vsCmpHTML(byId(${s.id})))">🖨️ طباعة</button></span></div>
+  <div class="ov-stats" style="margin-bottom:14px">${C.V.map((v,i)=>`<div class="ov-s"><div class="ov-s-lb">${VN[i]}${v&&v.date?' — '+esc(v.date):''}</div><div class="ov-s-v" style="font-size:16px">${C.done[i]?`<span style="color:var(--em)">مميز ${C.sum[i].m}</span> · <span style="color:var(--am)">متوسط ${C.sum[i].a}</span> · <span style="color:var(--ro)">ضعيف ${C.sum[i].w}</span>`:'<span style="color:var(--tm)">لم تُنفَّذ</span>'}</div></div>`).join('')}</div>
+  <div class="tbl-w"><table class="tbl"><thead><tr><th class="r">المجال</th><th class="r">العنصر</th>${VN.map(n=>`<th>${n}</th>`).join('')}<th>الاتجاه</th></tr></thead><tbody>`;
+  C.rows.forEach(r=>{h+=`<tr><td class="r" style="font-size:10.5px">${VDOM[r.e.d][0]}</td><td class="r" style="color:var(--tp)">${esc(r.e.n)}</td>${r.L.map(x=>`<td>${lvCell(x)}</td>`).join('')}<td>${trTxt(r.trend)}</td></tr>`});
+  h+=`</tbody></table></div></div><div class="grid3">
+   <div class="card"><div class="bx-t" style="color:var(--em)">▲ عناصر تطورت (${C.improved.length})</div>${C.improved.length?`<ul class="miss">${C.improved.map(r=>`<li>${esc(r.e.n)}</li>`).join('')}</ul>`:'<p class="hint">—</p>'}${C.declined.length?`<div class="bx-t" style="color:var(--ro);margin-top:10px">▼ عناصر انخفضت (${C.declined.length})</div><ul class="miss">${C.declined.map(r=>`<li>${esc(r.e.n)}</li>`).join('')}</ul>`:''}</div>
+   <div class="card"><div class="bx-t" style="color:var(--am)">عناصر ما زالت تحتاج دعمًا (${C.support.length})</div><p class="hint" style="margin-bottom:6px">مستواها في آخر زيارة متوسط أو ضعيف</p>${C.support.length?`<ul class="miss">${C.support.map(r=>`<li>${esc(r.e.n)} — ${LV[r.last]}</li>`).join('')}</ul>`:'<p class="hint">—</p>'}</div>
+   <div class="card"><div class="bx-t" style="color:var(--vi)">الاحتياجات التدريبية المتكررة (${C.recurring.length})</div><p class="hint" style="margin-bottom:6px">احتياج مسجل للعنصر نفسه في زيارتين أو أكثر</p>${C.recurring.length?`<ul class="miss">${C.recurring.map(x=>`<li><b>${esc(x.e.n)}:</b> ${x.a.map(y=>VZ[y.i]+': '+esc(y.t)).join(' — ')}</li>`).join('')}</ul>`:'<p class="hint">—</p>'}</div></div>`;
+  h+=`<div class="card"><div class="card-t">الأدوات المساندة عبر الزيارات</div><div class="tbl-w"><table class="tbl"><thead><tr><th class="r">الأداة</th>${VN.map(n=>`<th>${n}</th>`).join('')}</tr></thead><tbody>${VTOOLS.map((t,k)=>`<tr><td class="r" style="color:var(--tp)">${esc(t)}</td>${C.V.map(v=>`<td>${v&&v.tl['t'+(k+1)]?`<span class="lvt t-${v.tl['t'+(k+1)]}">${TL[v.tl['t'+(k+1)]]}</span>`:'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>
+  <div class="card"><div class="card-t">الدعم المقدم للمعلمة</div><div class="grid3">${C.V.map((v,i)=>`<div><div class="bx-t">${VN[i]}</div><div class="hint" style="color:var(--ts)">${v&&v.support?nl(v.support):'—'}</div></div>`).join('')}</div></div>`;
+  return h}
+
+function visFormHTML(s){const V=[0,1,2].map(i=>(s.visits||[])[i]),S=D.school;
+  const mk=(v,map,k)=>V.map((x,i)=>x&&x[map][k]?`<div><b>${VZ[i]}:</b> ${esc(x[map][k])}</div>`:'').join('');
+  let g=V.map((v,i)=>`<tr><td><b>${VN[i]}</b></td><td>${v&&v.day?esc(v.day):''}</td><td>${v&&v.date?esc(v.date):'/ / '+esc(S.year)}</td><td>${v?esc(v.cls):''}</td><td class="r">${sTop(v)||'موضوع الدرس/'}</td></tr>`).join('');
+  let b='';VDOM.forEach(([dn,L],di)=>{VEL.filter(e=>e.d===di).forEach((e,j)=>{
+    b+=`<tr>${j===0?`<td rowspan="${L.length}">${di+1}</td><td rowspan="${L.length}" class="vtd"><span class="vt">${dn}</span></td>`:''}<td class="r">${esc(e.n)}</td>${['m','a','w'].map(k=>[0,1,2].map(i=>`<td class="ck5">${V[i]&&V[i].lv[e.id]===k?'✓':''}</td>`).join('')).join('')}<td class="r sm">${mk(V,'ex',e.id)}</td><td class="r sm nd">${mk(V,'need',e.id)}</td><td class="r sm">${mk(V,'note',e.id)}</td></tr>`})});
+  let t=VTOOLS.map((n,k)=>{const id='t'+(k+1);return`<tr><td>${k+1}</td><td class="r">${esc(n)}</td>${['on','part','off'].map(x=>`<td>${V.map((v,i)=>v&&v.tl[id]===x?VZ[i]:'').filter(Boolean).join(' ')}</td>`).join('')}<td class="r sm">${mk(V,'why',id)}</td><td class="r sm">${mk(V,'tn',id)}</td></tr>`}).join('');
+  return prHead()+`<div class="pr pf50"><div class="pr-ttl" style="position:relative"><span>استمارة دعم وتطوير الهيئة التعليمية</span><b style="position:absolute;left:0;top:2px;font-size:10px;color:#475569">نموذج رقم (٥٠)</b></div>
+  <div class="pr-bar">أولًا: معلومات عامة</div>
+  <table class="pr-t"><thead><tr><th style="width:14%">الزيارة</th><th style="width:13%">يوم الزيارة</th><th style="width:15%">تاريخ الزيارة</th><th style="width:15%">الشعبة/الصف</th><th>موضوع الدرس / المادة</th></tr></thead><tbody>${g}</tbody></table>
+  <div class="pr-bar">ثانيًا: عملية التعليم والتعلم</div>
+  <table class="pr-t f50"><thead><tr><th rowspan="3" style="width:3%">م</th><th rowspan="3" style="width:5%">المجال</th><th rowspan="3">العنصر</th><th colspan="9">مستوى الأداء</th><th rowspan="3" style="width:11%">جوانب التميز</th><th rowspan="3" style="width:11%" class="ndh">احتياجات التنمية المهنية (الاحتياج التدريبي)</th><th rowspan="3" style="width:9%">ملحوظات</th></tr>
+   <tr><th colspan="3" class="h-m">مميز</th><th colspan="3" class="h-a">متوسط</th><th colspan="3" class="h-w">ضعيف</th></tr><tr>${VZ.concat(VZ,VZ).map(z=>`<th class="z">${z}</th>`).join('')}</tr></thead><tbody>${b}</tbody></table>
+  <div class="pr-bar">ثالثًا: الأدوات المساندة لعملية التعليم والتعلم</div>
+  <table class="pr-t"><thead><tr><th style="width:4%">م</th><th>الأدوات</th><th style="width:9%">مفعل</th><th style="width:11%">مفعل إلى حد ما</th><th style="width:9%">غير مفعل</th><th style="width:15%">الأسباب</th><th style="width:15%">ملحوظات</th></tr></thead><tbody>${t}</tbody></table>
+  <div class="pr-bar">الدعم المقدم للمعلمة</div>
+  <table class="pr-t"><thead><tr>${VN.map(n=>`<th>${n}</th>`).join('')}</tr></thead><tbody><tr>${V.map(v=>`<td class="r sm" style="height:34px;vertical-align:top">${v?nl(v.support):''}</td>`).join('')}</tr></tbody></table>
+  <table class="pr-t" style="margin-top:6px"><thead><tr>${VN.map(n=>`<th>${n}</th>`).join('')}</tr></thead><tbody><tr>${V.map(v=>`<td class="r" style="line-height:1.9;font-size:10px"><b>المعلمة:</b> ${esc(s.name)}<br><b>مقدمة الدعم:</b> ${v?esc(v.sup):''}<br><b>التوقيع:</b> .............. <b>وظيفتها:</b> ${v?esc(v.supJob):''}</td>`).join('')}</tr></tbody></table>${prFoot()}</div>`}
+
+function vsCmpHTML(s){const C=vsCmp(s),S=D.school;
+  return prHead()+`<div class="pr"><div class="pr-ttl"><span>تقرير مقارنة الزيارات الصفية</span></div>${infoTable(s)}
+  <div class="pr-bar">أولًا: بيانات الزيارات</div><table class="pr-t"><thead><tr><th>الزيارة</th><th>التاريخ</th><th>الصف</th><th>المادة / الموضوع</th><th>مميز</th><th>متوسط</th><th>ضعيف</th></tr></thead><tbody>${C.V.map((v,i)=>`<tr><td><b>${VN[i]}</b></td><td>${v?esc(v.date):'—'}</td><td>${v?esc(v.cls):'—'}</td><td class="r">${sTop(v)||'—'}</td><td>${C.done[i]?C.sum[i].m:'—'}</td><td>${C.done[i]?C.sum[i].a:'—'}</td><td>${C.done[i]?C.sum[i].w:'—'}</td></tr>`).join('')}</tbody></table>
+  <div class="pr-bar">ثانيًا: مستوى الأداء في كل عنصر</div><table class="pr-t"><thead><tr><th style="width:13%">المجال</th><th>العنصر</th>${VN.map(n=>`<th style="width:11%">${n}</th>`).join('')}<th style="width:10%">الاتجاه</th></tr></thead><tbody>${C.rows.map(r=>`<tr><td class="r sm">${VDOM[r.e.d][0]}</td><td class="r">${esc(r.e.n)}</td>${r.L.map(x=>`<td>${x?LV[x]:'—'}</td>`).join('')}<td>${trTxt(r.trend)}</td></tr>`).join('')}</tbody></table>
+  <div class="pr-bar">ثالثًا: خلاصة المقارنة</div>
+  <table class="pr-t"><tr><td class="k" style="width:24%">عناصر تطورت</td><td class="r">${C.improved.map(r=>esc(r.e.n)).join(' — ')||'—'}</td></tr>
+  <tr><td class="k">عناصر انخفضت</td><td class="r">${C.declined.map(r=>esc(r.e.n)).join(' — ')||'—'}</td></tr>
+  <tr><td class="k">عناصر ما زالت تحتاج دعمًا</td><td class="r">${C.support.map(r=>esc(r.e.n)+' ('+LV[r.last]+')').join(' — ')||'—'}</td></tr>
+  <tr><td class="k">الاحتياجات التدريبية المتكررة</td><td class="r">${C.recurring.map(x=>'<b>'+esc(x.e.n)+':</b> '+x.a.map(y=>VZ[y.i]+': '+esc(y.t)).join('، ')).join('<br>')||'—'}</td></tr>
+  <tr><td class="k">جميع الاحتياجات التدريبية</td><td class="r">${C.all.map(x=>VZ[x.i]+': '+esc(x.t)).join(' — ')||'—'}</td></tr></table>
+  <div class="pr-bar">رابعًا: الدعم المقدم للمعلمة</div><table class="pr-t"><thead><tr>${VN.map(n=>`<th>${n}</th>`).join('')}</tr></thead><tbody><tr>${C.V.map(v=>`<td class="r sm" style="vertical-align:top">${v?nl(v.support)||'—':'—'}</td>`).join('')}</tr></tbody></table>
+  ${sigBlock([['المعلمة',s.name],['المديرة',S.principal]])}${prFoot()}</div>`}
+
+/* ═══════════ التقرير الشامل ═══════════ */
+function fullHTML(s){const m=MODELS[s.model],c=calc(s),E=evCalc(s),S=D.school,R1=(s.reviews||[])[0],R2=(s.reviews||[])[1],C=vsCmp(s),miss=evMissing(s,curEvMap(s));
+  const bul=a=>a.filter(Boolean).length?a.filter(Boolean).map(x=>'• '+x).join('<br>'):'—';
+  const rows=m.items.map((it,k)=>{const v=s.ratings[it.id],p=E.per[it.id];return`<tr><td>${k+1}</td><td class="r">${esc(it.n)}</td><td>${it.w}%</td><td>${v||'—'}</td><td>${p.pct==null?'—':p.pct+'%'}</td><td>${R1&&R1.rt[it.id]||'—'}</td><td>${R2&&R2.rt[it.id]||'—'}</td></tr>`}).join('');
+  const lab=(t,x)=>x?`<b>${t}:</b> ${nl(x)}`:'';
+  return prHead()+`<div class="pr"><div class="pr-ttl"><span>تقرير المتابعة الشامل</span></div>${infoTable(s)}
+  <div class="pr-bar">أولًا: تقييم الأداء الوظيفي</div>
+  <table class="pr-t"><thead><tr><th style="width:4%">م</th><th>عنصر التقييم</th><th style="width:7%">الوزن</th><th style="width:9%">التقدير</th><th style="width:10%">توفر الشواهد</th><th style="width:10%">المراجعة ١</th><th style="width:10%">المراجعة ٢</th></tr></thead><tbody>${rows}
+  <tr class="tot"><td colspan="3" class="r">التقدير الموزون / التقدير العام</td><td colspan="2">${fmt(c.score)} — ${c.final?c.final+' '+RL[c.final]:'لم يكتمل'}</td><td colspan="2">الشواهد: ${E.pct==null?'—':E.pct+'%'}</td></tr></tbody></table>
+  <div class="pr-bar">ثانيًا: توفر الشواهد</div>
+  <table class="pr-t"><thead><tr><th>المطلوبة</th><th>المتوفرة</th><th>غير المتوفرة</th><th>لا ينطبق</th><th>نسبة التوفر</th></tr></thead><tbody><tr class="tot"><td>${E.tot-E.na}</td><td>${E.y}</td><td>${E.n+E.u}</td><td>${E.na}</td><td>${E.pct==null?'—':E.pct+'%'}</td></tr></tbody></table>
+  ${miss.length&&miss.length<=25?`<div class="pr-txt" style="font-size:9.5px"><b>الشواهد غير المتوفرة:</b> ${miss.map(x=>esc(x.n)).join(' — ')}</div>`:''}
+  <div class="pr-bar">ثالثًا: المراجعات النصف سنوية</div>
+  <table class="pr-t"><thead><tr><th style="width:16%">المراجعة</th><th style="width:16%">التاريخ</th><th style="width:16%">اكتمال الشواهد</th><th>التوصيات</th></tr></thead><tbody>${[R1,R2].map((r,i)=>{const e=r?evSnap(s,r.ev):null;return`<tr><td><b>${RVN[i]}</b></td><td>${rvHas(r)?esc(r.date)||'—':'لم تتم'}</td><td>${e&&e.pct!=null?e.pct+'%':'—'}</td><td class="r sm">${r?nl(r.rec)||'—':'—'}</td></tr>`}).join('')}</tbody></table>
+  <div class="pr-bar">رابعًا: الزيارات الصفية</div>
+  <table class="pr-t"><thead><tr><th>الزيارة</th><th>التاريخ</th><th>المادة / الموضوع</th><th>مميز</th><th>متوسط</th><th>ضعيف</th></tr></thead><tbody>${C.V.map((v,i)=>`<tr><td><b>${VN[i]}</b></td><td>${C.done[i]?esc(v.date)||'—':'لم تُنفَّذ'}</td><td class="r">${C.done[i]?sTop(v)||'—':'—'}</td><td>${C.done[i]?C.sum[i].m:'—'}</td><td>${C.done[i]?C.sum[i].a:'—'}</td><td>${C.done[i]?C.sum[i].w:'—'}</td></tr>`).join('')}</tbody></table>
+  ${C.done.filter(Boolean).length>=2?`<table class="pr-t" style="margin-top:4px"><tr><td class="k" style="width:24%">عناصر تطورت</td><td class="r sm">${C.improved.map(r=>esc(r.e.n)).join(' — ')||'—'}</td></tr><tr><td class="k">ما زالت تحتاج دعمًا</td><td class="r sm">${C.support.map(r=>esc(r.e.n)).join(' — ')||'—'}</td></tr></table>`:''}
+  <div class="pr-bar">خامسًا: جوانب التميز</div><div class="pr-txt sm">${bul([s.strengths&&lab('التقييم',s.strengths),R1&&lab(RVN[0],R1.str),R2&&lab(RVN[1],R2.str),C.V.map((v,i)=>v?Object.values(v.ex).map(x=>esc(x)).join('، '):'').map((x,i)=>x?`<b>${VN[i]}:</b> ${x}`:'').filter(Boolean).join('<br>')])}</div>
+  <div class="pr-bar">سادسًا: جوانب التحسين</div><div class="pr-txt sm">${bul([s.weaknesses&&lab('التقييم',s.weaknesses),R1&&lab(RVN[0],R1.imp),R2&&lab(RVN[1],R2.imp),C.support.length?'<b>الزيارات — عناصر تحتاج دعمًا:</b> '+C.support.map(r=>esc(r.e.n)).join('، '):''])}</div>
+  <div class="pr-bar">سابعًا: الاحتياجات التدريبية</div><div class="pr-txt sm">${bul([R1&&lab(RVN[0],R1.need),R2&&lab(RVN[1],R2.need),C.all.length?'<b>الزيارات:</b> '+C.all.map(x=>VZ[x.i]+': '+esc(x.t)).join('، '):''])}</div>
+  <div class="pr-bar">ثامنًا: التوصيات</div><div class="pr-txt sm">${bul([s.notes&&lab('التقييم',s.notes),R1&&lab(RVN[0],R1.rec),R2&&lab(RVN[1],R2.rec)])}</div>
+  ${sigBlock([['المعلمة',s.name],['المديرة',S.principal]])}<div style="font-size:10px;margin-top:8px">التاريخ: ....../....../ ${esc(S.year)}</div>${prFoot()}</div>`}
+
+/* ═══════════ التقارير ═══════════ */
+function repDefs(s){const has=!!MODELS[s.model],isT=true;return[
+ ['تقرير تقييم الأداء الوظيفي','العناصر والأوزان والتقدير الموزون والتقدير العام ونقاط القوة والضعف مع التواقيع.',has?'evalHTML':''],
+ ['تقرير توفر الشواهد','حالة كل شاهد تحت عناصر التقييم، والملاحظات، وعدد المتوفر وغير المتوفر، ونسبة التوفر.',has?'evidHTML':''],
+ ['تقرير المراجعة النصف سنوية للأداء (الأولى)','بنود الأداء والشواهد وجوانب التميز والتحسين والاحتياجات والتوصيات.',has&&rvHas((s.reviews||[])[0])?'rev0':''],
+ ['تقرير المراجعة النصف سنوية للأداء (الثانية)','يتضمن المقارنة بالمراجعة الأولى عند اكتمالهما.',has&&rvHas((s.reviews||[])[1])?'rev1':''],
+ ['استمارة الزيارة الصفية (نموذج ٥٠)','استمارة دعم وتطوير الهيئة التعليمية للزيارات الثلاث بصيغة النموذج الرسمي.','visFormHTML'],
+ ['تقرير مقارنة الزيارات','تطور مستوى الأداء عبر الزيارات، والعناصر التي تحتاج دعمًا، والاحتياجات المتكررة.',vsCount(s)>=2?'vsCmpHTML':''],
+ ['التقرير الشامل للمعلمة','يجمع التقييم والشواهد والمراجعات والزيارات وجوانب التميز والتحسين والاحتياجات والتوصيات.',has?'fullHTML':'']]}
+function repRun(id,k,pv){const s=byId(id);if(!s)return;const f={rev0:x=>revHTML(x,0),rev1:x=>revHTML(x,1)}[k]||window[k];const d=repDefs(s).find(x=>x[2]===k);
+  if(pv)prevDoc(f(s),(d?d[0]:'تقرير')+' — '+s.name);else printDoc(f(s))}
+function repCards(s){return`<div class="rep-g">${repDefs(s).map(([t,d,k])=>`<div class="rep"><h4>${t}</h4><p>${d}</p><div class="acts">${k?`<button class="mb mb-cy" onclick="repRun(${s.id},'${k}',1)">👁️ معاينة</button><button class="mb mb-am" onclick="repRun(${s.id},'${k}')">🖨️ طباعة / PDF</button>`:'<span class="sp">لا توجد بيانات كافية بعد</span>'}</div></div>`).join('')}</div>`}
+function tRep(s){document.getElementById('tabCt').innerHTML=repCards(s)}
+let repSel=null;
+function vReports(){setHead('التقارير');const ct=document.getElementById('mnCt');
+  if(!D.staff.length){ct.innerHTML=`<div class="empty"><div class="em">🖨️</div><p>أضيفي المنسوبات أولًا</p></div>`;return}
+  if(!byId(repSel))repSel=D.staff[0].id;const s=byId(repSel);
+  ct.innerHTML=`<div class="card"><div class="card-t">🖨️ مركز التقارير</div><div class="grid2"><div class="fg"><label>اختاري المنسوبة</label><select class="fs" onchange="repSel=+this.value;vReports()">${D.staff.map(x=>`<option value="${x.id}"${x.id===repSel?' selected':''}>${esc(x.name)} — ${esc(jobN(x.job))}</option>`).join('')}</select></div></div></div>${repCards(s)}
+  <div class="card" style="margin-top:20px"><div class="card-t">📋 تقارير المدرسة</div><div class="rep-g"><div class="rep"><h4>ملخص أداء المنسوبات</h4><p>جدول بجميع المنسوبات: التقدير الموزون والعام، واكتمال التقييم، والشواهد، والمراجعات، والزيارات.</p><div class="acts"><button class="mb mb-cy" onclick="prevDoc(schoolHTML(),'ملخص أداء المنسوبات')">👁️ معاينة</button><button class="mb mb-am" onclick="printDoc(schoolHTML())">🖨️ طباعة / PDF</button></div></div></div></div>`}
+function schoolHTML(){const S=D.school;
+  return prHead()+`<div class="pr"><div class="pr-ttl"><span>ملخص أداء المنسوبات</span></div><table class="pr-t"><thead><tr><th style="width:4%">م</th><th>الاسم</th><th>المسمى</th><th>التخصص</th><th>التقدير الموزون</th><th>التقدير العام</th><th>اكتمال التقييم</th><th>الشواهد</th><th>المراجعات</th><th>الزيارات</th></tr></thead><tbody>${D.staff.map((s,i)=>{const c=calc(s),e=evCalc(s),r=rvDone(s);return`<tr><td>${i+1}</td><td class="r">${esc(s.name)}</td><td>${esc(jobN(s.job))}</td><td>${esc(s.spec)||'—'}</td><td>${fmt(c.score)}</td><td>${c.final?c.final+' — '+RL[c.final]:'—'}</td><td>${c.has?c.f+'/'+c.n:'—'}</td><td>${c.has&&e.pct!=null?e.pct+'%':'—'}</td><td>${c.has?(r[0]?'✓':'✗')+' '+(r[1]?'✓':'✗'):'—'}</td><td>${VIS_MODELS.includes(s.model)?vsCount(s)+'/3':'—'}</td></tr>`}).join('')}</tbody></table>
+  ${sigBlock([['مديرة المدرسة',S.principal]])}${prFoot()}</div>`}
+
+/* ═══════════ التصدير والاستيراد ═══════════ */
+function dl(obj,name){const b=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
+function expAll(){dl(D,'بيانات_الأداء_الوظيفي.json');toast('📤 تم التصدير','ok')}
+function expT(){const s=byId(R.id);if(!s)return;const m=MODELS[s.model],c=calc(s);
+  dl({name:s.name,job:jobN(s.job),spec:s.spec,subject:s.subject,model:modelN(s.model),weighted:c.score,final:c.final,finalLabel:c.final?RL[c.final]:null,courses:s.courses,
+   ratings:m?m.items.map(it=>({element:it.n,weight:it.w+'%',rating:s.ratings[it.id]||'—'})):[],portfolio:s.portfolio||'',evidencePct:evCalc(s).pct,reviews:s.reviews,visits:s.visits,evidence:m?m.items.map(it=>({element:it.n,items:evList(it.id).map(e=>({evidence:e.n,status:EVS[(s.evidence[e.id]||{}).st]||'لم يُحدَّد',note:(s.evidence[e.id]||{}).note||'',link:(s.evidence[e.id]||{}).link||''}))})):[],strengths:s.strengths,weaknesses:s.weaknesses,notes:s.notes},`تقرير_${s.name}.json`);toast('📤 تم تصدير '+s.name,'ok')}
+function impD(){document.getElementById('fIn').click()}
+function hdImp(ev){const f=ev.target.files[0];ev.target.value='';if(!f)return;const r=new FileReader();
+  r.onload=e=>{try{const o=JSON.parse(e.target.result);let d=null;
+    if(o&&o.v===2&&Array.isArray(o.staff))d=norm(o);else if(o&&Array.isArray(o.ts))d=migrateV1(o);
+    if(!d){toast('⚠️ الملف غير معروف','err');return}
+    if(D.staff.length&&!confirm('سيتم استبدال البيانات الحالية ('+D.staff.length+' منسوبة) ببيانات الملف ('+d.staff.length+'). متابعة؟'))return;
+    if(!d.school.name&&D.school.name)d.school=D.school;D=d;as();go('dash');toast('📥 تم الاستيراد','ok')}catch(er){toast('⚠️ خطأ في قراءة الملف','err')}};
+  r.readAsText(f)}
+
+function togSB(){document.getElementById('sb').classList.toggle('open');document.getElementById('ov').classList.toggle('show')}
+function toast(m,t){const e=document.getElementById('tst');e.textContent=m;e.className='toast '+t+' show';clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),2500)}
+
+route();
+</script>
+</body>
+</html>
