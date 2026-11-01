@@ -103,6 +103,17 @@ button{font-family:inherit}
 @keyframes su{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .ov-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
 .ov-s{background:var(--bg1);border:1px solid var(--bd);border-radius:13px;padding:18px;animation:su .4s ease both}
+.ov-s.clk{cursor:pointer;position:relative;transition:border-color .15s,transform .15s,box-shadow .15s}
+.ov-s.clk:hover{border-color:var(--cy);transform:translateY(-2px)}
+.ov-s.on{border-color:var(--cy);box-shadow:0 0 0 2px rgba(56,189,248,.25)}
+.ov-more{position:absolute;top:12px;left:12px;font-size:9px;color:var(--tm)}
+.d-sec{margin-bottom:14px}.d-sec-t{font-family:'Cairo';font-weight:800;font-size:13px;margin:4px 0 8px}
+.d-n{display:inline-block;min-width:22px;padding:1px 7px;border-radius:10px;background:rgba(var(--fg),.08);font-size:11px;text-align:center}
+.d-tag{display:inline-block;padding:2px 8px;border-radius:7px;font-size:11px;font-weight:700}
+.d-tag.ok{background:rgba(52,211,153,.13);color:var(--em)}.d-tag.no{background:rgba(251,113,133,.12);color:var(--ro)}
+.d-list span{display:inline-block;margin:2px 3px;padding:2px 7px;border-radius:6px;background:rgba(var(--fg),.06);font-size:11px}
+.d-card details summary{cursor:pointer;color:var(--ro);font-size:12px;font-weight:700}
+.d-it{margin:8px 0;font-size:11.5px;line-height:1.7}.d-it b{display:block;color:var(--cy);font-size:11.5px}.d-it span{display:block;padding-right:10px;color:var(--ts)}
 .ov-s-ic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;margin-bottom:10px}
 .ov-s-lb{font-size:11px;color:var(--tm);margin-bottom:3px}
 .ov-s-v{font-family:'Cairo';font-size:26px;font-weight:900;line-height:1}
@@ -357,7 +368,7 @@ button{font-family:inherit}
   </div>
   <div class="mn-ct" id="mnCt"></div>
   <div class="credit">
-    <span style="font-size:10px;color:var(--tm);margin-left:10px">الإصدار 2.4</span><span style="font-size:11px;color:var(--tm)">إعداد: </span>
+    <span style="font-size:10px;color:var(--tm);margin-left:10px">الإصدار 2.5</span><span style="font-size:11px;color:var(--tm)">إعداد: </span>
     <span style="font-family:'Cairo';font-size:12px;font-weight:600;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">دانية العلويط</span>
   </div>
 </div>
@@ -501,6 +512,40 @@ function quickAdd(){const n=document.getElementById('qN').value.trim(),j=documen
   const s=newStaff({id:D.nId++,name:n,job:j,model:jobM(j)});D.staff.push(s);as();
   document.getElementById('qN').value='';toast('✅ تمت إضافة '+n,'ok');go('p/'+s.id+'/info')}
 
+/* تفاصيل مربعات النظرة العامة */
+let dK='';
+function dTog(k){dK=dK===k?'':k;keepY(renderAll);if(dK){const c=document.getElementById('dDet');if(c&&c.getBoundingClientRect().top>innerHeight-120)c.scrollIntoView({behavior:'smooth',block:'start'})}}
+function dNm(s,t){return`<td class="nm r" onclick="go('p/${s.id}/${t}')">${esc(s.name)}</td>`}
+function dTbl(hd,rows,empty){return rows.length?`<div class="tbl-w"><table class="tbl"><thead><tr>${hd.map((x,i)=>`<th${i?'':' class="r"'}>${x}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`:`<div class="hint" style="padding:10px 0">${empty}</div>`}
+function dSec(t,n,body){return`<div class="d-sec"><div class="d-sec-t">${t} <span class="d-n">${n}</span></div>${body}</div>`}
+function dDet(k,ev,vt){let t='',b='';const tag=(ok,y,n)=>`<span class="d-tag ${ok?'ok':'no'}">${ok?'✓ '+y:'✗ '+n}</span>`;
+  if(k==='st'){t='👩‍🏫 المنسوبات';
+    b=dTbl(['الاسم','المسمى','نموذج التقييم','التقدير العام'],D.staff.map(s=>{const c=calc(s),m=MODELS[s.model];
+      return`<tr>${dNm(s,'info')}<td><span class="sp">${esc(jobN(s.job))}</span></td><td style="font-size:11px">${m?esc(m.name):'<span style="color:var(--tm)">غير مشمولة</span>'}</td><td>${c.final?`<b style="color:${sCol(c.final)}">${c.final}</b> — ${RL[c.final]}`:'<span style="color:var(--tm)">'+(c.has?'لم يكتمل':'—')+'</span>'}</td></tr>`}),'لا توجد منسوبات')}
+  else if(k==='ev'){t='✅ التقييمات';const inc=ev.filter(s=>!calc(s).complete),cm=ev.filter(s=>calc(s).complete);
+    b=dSec('غير مكتملة',inc.length,dTbl(['الاسم','المقدّر','البنود غير المقدّرة'],inc.map(s=>{const c=calc(s),miss=MODELS[s.model].items.filter(it=>!s.ratings[it.id]);
+      return`<tr>${dNm(s,'eval')}<td><span class="mini-bar"><i style="width:${c.comp}%"></i></span>${c.f}/${c.n}</td><td class="d-list">${miss.length===c.n?'<span style="color:var(--tm)">لم يبدأ التقييم</span>':miss.map(it=>`<span>${esc(it.n)}</span>`).join('')}</td></tr>`}),'جميع التقييمات مكتملة 🎉'))+
+      dSec('مكتملة',cm.length,dTbl(['الاسم','التقدير الموزون','التقدير العام'],cm.map(s=>{const c=calc(s);
+      return`<tr>${dNm(s,'eval')}<td style="font-family:Cairo;font-weight:800;color:${sCol(c.score)}">${fmt(c.score)}</td><td><b style="color:${sCol(c.final)}">${c.final}</b> — ${RL[c.final]}</td></tr>`}),'لا توجد تقييمات مكتملة بعد'))}
+  else if(k==='ed'){t='📎 الشواهد الناقصة';
+    const rows=ev.map(s=>({s,e:evCalc(s)})).filter(x=>x.e.tot-x.e.na>x.e.y).sort((a,b)=>(a.e.pct||0)-(b.e.pct||0));
+    b=dTbl(['الاسم','نسبة التوفر','الشواهد الناقصة'],rows.map(({s,e})=>{const m=MODELS[s.model];let det='';
+      m.items.forEach(it=>{const ms=evList(it.id).filter(x=>{const st=(s.evidence[x.id]||{}).st;return st!=='y'&&st!=='na'});
+        if(ms.length)det+=`<div class="d-it"><b>${esc(it.n)}</b>${ms.map(x=>`<span>${(s.evidence[x.id]||{}).st==='n'?'✗':'○'} ${esc(x.n)}</span>`).join('')}</div>`});
+      const miss=e.tot-e.na-e.y;
+      return`<tr>${dNm(s,'evid')}<td style="font-family:Cairo;font-weight:800;color:${pCol(e.pct)}">${e.pct==null?'—':e.pct+'%'}<div class="hint">${e.y} من ${e.tot-e.na}</div></td><td class="r"><details><summary>عرض الناقص (${miss})${e.u?' · لم يُرصد: '+e.u:''}</summary>${det}</details></td></tr>`}),'جميع الشواهد مكتملة 🎉')+
+      `<div class="hint" style="margin-top:6px">✗ غير متوفر · ○ لم يُرصد بعد</div>`}
+  else if(k==='rv'){t='🗓️ المراجعات النصف سنوية';
+    const rows=ev.map(s=>{const r=rvDone(s),R=s.reviews||[],dt=i=>r[i]&&R[i].date?' <span class="hint">'+esc(R[i].date)+'</span>':'';
+      return{s,r,h:`<tr>${dNm(s,'rev')}<td>${tag(r[0],'تمت','لم تتم')}${dt(0)}</td><td>${tag(r[1],'تمت','لم تتم')}${dt(1)}</td></tr>`}});
+    const pend=rows.filter(x=>!x.r[0]||!x.r[1]),ok=rows.filter(x=>x.r[0]&&x.r[1]);
+    b=dSec('لم تكتمل مراجعاتها',pend.length,dTbl(['الاسم','المراجعة الأولى','المراجعة الثانية'],pend.map(x=>x.h),'جميع المراجعات تمت 🎉'))+
+      (ok.length?dSec('اكتملت مراجعتاها',ok.length,dTbl(['الاسم','المراجعة الأولى','المراجعة الثانية'],ok.map(x=>x.h),'')):'')}
+  else if(k==='vs'){t='👁️ الزيارات الصفية';
+    b=dTbl(['الاسم','الزيارة الأولى','الزيارة الثانية','الزيارة الثالثة','المنفذ'],[...vt].sort((a,b)=>vsCount(a)-vsCount(b)).map(s=>{const V=s.visits||[];
+      return`<tr>${dNm(s,'vis')}${[0,1,2].map(i=>{const v=V[i],d=vsDone(v);return`<td>${tag(d,'نُفذت','لم تُنفذ')}${d&&v.date?'<div class="hint">'+esc(v.date)+'</div>':''}</td>`}).join('')}<td style="font-family:Cairo;font-weight:800">${vsCount(s)}/3</td></tr>`}),'لا توجد منسوبات مشمولة بالزيارات الصفية')}
+  return`<div class="card d-card" id="dDet"><div class="card-t">${t}<span class="sp-r"><button class="mb" onclick="dTog('${k}')">✕ إغلاق</button></span></div><div class="hint" style="margin:-6px 0 10px">اضغطي على الاسم للانتقال إلى صفحتها</div>${b}</div>`}
+
 /* ═══════════ النظرة العامة ═══════════ */
 function ago(t){const d=(Date.now()-t)/60000;if(d<1)return'الآن';if(d<60)return'قبل '+Math.round(d)+' دقيقة';if(d<1440)return'قبل '+Math.round(d/60)+' ساعة';return'قبل '+Math.round(d/1440)+' يوم'}
 function vDash(){setHead('النظرة العامة','<span class="bdg bdg-em"><span class="bdot"></span>دورة الأداء</span>');
@@ -513,13 +558,15 @@ function vDash(){setHead('النظرة العامة','<span class="bdg bdg-em"><
   let h='';
   {const le=D.lastExport,days=le?Math.floor((Date.now()-le)/864e5):null;if(days===null||days>=7)h+=`<div class="note-box note-warn" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>💾 ${days===null?'لم تُحفظ نسخة احتياطية من بياناتك بعد.':'آخر نسخة احتياطية قبل '+days+' يومًا.'} البيانات محفوظة في هذا المتصفح فقط — احفظي نسخة على جهازك أو في درايف.</span><button class="mb mb-am" onclick="expAll();renderAll()">📤 حفظ نسخة احتياطية الآن</button></div>`}
   if(!D.school.name)h+=`<div class="note-box note-warn">⚠️ لم تُدخل بيانات المدرسة بعد — تظهر في ترويسة جميع التقارير المطبوعة. <a href="#school" style="color:var(--am)">إدخالها الآن</a></div>`;
-  h+=`<div class="ov-stats">
-   <div class="ov-s"><div class="ov-s-ic" style="background:rgba(52,211,153,.1)">👩‍🏫</div><div class="ov-s-lb">المنسوبات</div><div class="ov-s-v" style="color:var(--em)">${D.staff.length}</div><div class="ov-s-sub">${ev.length} مشمولة بنموذج تقييم</div></div>
-   <div class="ov-s"><div class="ov-s-ic" style="background:rgba(56,189,248,.1)">✅</div><div class="ov-s-lb">التقييمات المكتملة</div><div class="ov-s-v" style="color:var(--cy)">${done}</div><div class="ov-s-sub">غير مكتملة: ${ev.length-done}</div></div>
-   <div class="ov-s"><div class="ov-s-ic" style="background:rgba(251,113,133,.1)">📎</div><div class="ov-s-lb">شواهد ناقصة</div><div class="ov-s-v" style="color:var(--ro)">${evMiss.length}</div><div class="ov-s-sub">منسوبة لم تكتمل شواهدها</div></div>
-   <div class="ov-s"><div class="ov-s-ic" style="background:rgba(251,191,36,.1)">🗓️</div><div class="ov-s-lb">مراجعات لم تتم</div><div class="ov-s-v" style="color:var(--am)">${r1.length+r2.length}</div><div class="ov-s-sub">الأولى: ${r1.length} · الثانية: ${r2.length}</div></div>
-   <div class="ov-s"><div class="ov-s-ic" style="background:rgba(167,139,250,.1)">👁️</div><div class="ov-s-lb">الزيارات الصفية المنفذة</div><div class="ov-s-v" style="color:var(--vi)">${vDoneN}</div><div class="ov-s-sub">المتبقية: ${vTot-vDoneN} من ${vTot}</div></div>
-  </div>`;
+  const box=(k,bg,ic,lb,col,v,sub)=>`<div class="ov-s clk${dK===k?' on':''}" onclick="dTog('${k}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter')dTog('${k}')"><span class="ov-more">${dK===k?'▲':'▼'}</span><div class="ov-s-ic" style="background:${bg}">${ic}</div><div class="ov-s-lb">${lb}</div><div class="ov-s-v" style="color:${col}">${v}</div><div class="ov-s-sub">${sub}</div></div>`;
+  h+=`<div class="ov-stats">`+
+   box('st','rgba(52,211,153,.1)','👩‍🏫','المنسوبات','var(--em)',D.staff.length,ev.length+' مشمولة بنموذج تقييم')+
+   box('ev','rgba(56,189,248,.1)','✅','التقييمات المكتملة','var(--cy)',done,'غير مكتملة: '+(ev.length-done))+
+   box('ed','rgba(251,113,133,.1)','📎','شواهد ناقصة','var(--ro)',evMiss.length,'منسوبة لم تكتمل شواهدها')+
+   box('rv','rgba(251,191,36,.1)','🗓️','مراجعات لم تتم','var(--am)',r1.length+r2.length,'الأولى: '+r1.length+' · الثانية: '+r2.length)+
+   box('vs','rgba(167,139,250,.1)','👁️','الزيارات الصفية المنفذة','var(--vi)',vDoneN,'المتبقية: '+(vTot-vDoneN)+' من '+vTot)+
+  `</div><div class="hint" style="margin:-14px 0 16px">اضغطي على أي مربع لعرض تفاصيله</div>`;
+  if(dK)h+=dDet(dK,ev,vt);
   h+=`<div class="card"><div class="card-t">📋 متابعة المنسوبات<span class="sp-r"><button class="mb mb-am" onclick="printDoc(schoolHTML())">🖨️ طباعة الملخص</button></span></div><div class="tbl-w"><table class="tbl"><thead><tr><th class="r">الاسم</th><th>المسمى</th><th>التقدير الموزون</th><th>التقدير العام</th><th>اكتمال التقييم</th><th>الشواهد</th><th>المراجعات</th><th>الزيارات</th></tr></thead><tbody>`;
   D.staff.forEach(s=>{const c=calc(s),ep=evCalc(s).pct,r=rvDone(s),vis=VIS_MODELS.includes(s.model);
     h+=`<tr><td class="nm r" onclick="go('p/${s.id}/eval')">${esc(s.name)}</td><td><span class="sp">${esc(jobN(s.job))}</span></td><td style="font-family:Cairo;font-weight:800;color:${sCol(c.score)}">${fmt(c.score)}</td><td>${c.final?`<b style="color:${sCol(c.final)}">${c.final}</b> — ${RL[c.final]}`:'<span style="color:var(--tm)">'+(c.has?'لم يكتمل':'—')+'</span>'}</td><td>${c.has?`<span class="mini-bar"><i style="width:${c.comp}%"></i></span>${c.f}/${c.n}`:'—'}</td><td style="font-family:Cairo;font-weight:800;color:${pCol(ep)};cursor:pointer" onclick="go('p/${s.id}/evid')">${c.has&&ep!=null?ep+'%':'—'}</td><td style="cursor:pointer" onclick="go('p/${s.id}/rev')">${c.has?`<span class="dot ${r[0]?'ok':''}" title="الأولى"></span><span class="dot ${r[1]?'ok':''}" title="الثانية"></span>`:'—'}</td><td style="cursor:pointer" onclick="go('p/${s.id}/vis')">${vis?vsCount(s)+'/3':'—'}</td></tr>`});
